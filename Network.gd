@@ -5,7 +5,7 @@ const DEFAULT_PORT = 4200
 const MAX_PLAYERS = 5
 
 var players = { }
-var self_data = { name = '', position = Vector2(360, 180) }
+var self_data = { name = '', position = Vector2(30, 300) }
 
 signal player_disconnected
 signal server_disconnected
@@ -22,6 +22,7 @@ func create_server(player_nickname):
 
 func connect_to_server(player_nickname):
 	self_data.name = player_nickname
+	self_data.position = Vector2(get_viewport().get_visible_rect().size.x - 30 , 300)
 	get_tree().connect('connected_to_server', self, '_connected_to_server')
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(DEFAULT_IP, DEFAULT_PORT)
