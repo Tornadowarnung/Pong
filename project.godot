@@ -22,7 +22,6 @@ Network="*res://Network.gd"
 
 window/size/width=1280
 window/size/resizable=false
-window/size/borderless=true
 
 [input]
 
