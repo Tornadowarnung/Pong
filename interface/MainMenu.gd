@@ -26,5 +26,7 @@ func _on_JoinButton_pressed():
 	_load_game()
 
 func _load_game():
+	Network.ip_address = _ip_address
+	Network.port = _port
 	get_tree().change_scene('res://game/Game.tscn')
 
