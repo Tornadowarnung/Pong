@@ -9,9 +9,11 @@ func _on_Name_text_changed(new_text):
 
 func _on_IPAddress_text_changed(new_text):
 	_ip_address = new_text
+	Network.set_ip(_ip_address)
 
 func _on_Port_text_changed(new_text):
 	_port = new_text
+	Network.set_port(int(_port))
 
 func _on_CreateButton_pressed():
 	if _player_name == "":
@@ -26,7 +28,5 @@ func _on_JoinButton_pressed():
 	_load_game()
 
 func _load_game():
-	Network.ip_address = _ip_address
-	Network.port = _port
 	get_tree().change_scene('res://game/Game.tscn')
 

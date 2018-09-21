@@ -13,11 +13,20 @@ signal server_disconnected
 func _ready():
 	get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
 
+func set_ip(ip):
+	print(ip)
+	ip_address = ip
+
+func set_port(_port):
+	print(port)
+	port = _port
+
 func create_server(player_nickname):
 	self_data.name = player_nickname
 	players[1] = self_data
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_server(port, MAX_PLAYERS - 1)
+	var error = peer.create_server(port, MAX_PLAYERS - 1)
+	print("Creating server at port ", port, " with error code ", error)
 	get_tree().set_network_peer(peer)
 
 func connect_to_server(player_nickname):
@@ -25,7 +34,8 @@ func connect_to_server(player_nickname):
 	self_data.position = Vector2(get_viewport().get_visible_rect().size.x - 30 , 300)
 	get_tree().connect('connected_to_server', self, '_connected_to_server')
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client(ip_address, port)
+	var error = peer.create_client(ip_address, port)
+	print("Connecting to ", ip_address, ":", port, " with error code ", error)
 	get_tree().set_network_peer(peer)
 
 func _connected_to_server():

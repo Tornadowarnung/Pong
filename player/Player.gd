@@ -46,7 +46,6 @@ func _update_health_bar():
 	return
 
 func init(nameIn, positionIn, is_slave):
-	print('Instancing player ' + nameIn)
 	player_name = nameIn
 	position = positionIn
 	if is_slave:
