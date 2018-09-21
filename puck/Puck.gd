@@ -26,7 +26,6 @@ func _physics_process(delta):
 	
 
 func _collide_player(player, normal, pos):
-	print("Collided with: " + player.player_name + " with normal: " + String(normal))
 	movement.x = movement.x * -1
 	movement.y = movement.y + (pos.y - player.position.y) * 15
 
