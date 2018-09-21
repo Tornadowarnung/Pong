@@ -50,9 +50,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 125.0
-margin_top = 37.0
+margin_top = 11.0
 margin_right = 300.0
-margin_bottom = 61.0
+margin_bottom = 35.0
 rect_min_size = Vector2( 175, 24 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -71,13 +71,69 @@ caret_blink_speed = 0.65
 caret_position = 0
 _sections_unfolded = [ "Caret", "Placeholder", "Rect" ]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" index="1"]
+[node name="IPAddress" type="LineEdit" parent="VBoxContainer" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 102.0
+margin_left = 125.0
+margin_top = 62.0
+margin_right = 300.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 175, 24 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+size_flags_horizontal = 6
+size_flags_vertical = 6
+max_length = 20
+focus_mode = 2
+context_menu_enabled = true
+placeholder_text = "Name"
+placeholder_alpha = 0.6
+caret_blink = true
+caret_blink_speed = 0.65
+caret_position = 0
+_sections_unfolded = [ "Caret", "Placeholder", "Rect" ]
+
+[node name="Port" type="LineEdit" parent="VBoxContainer" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 125.0
+margin_top = 113.0
+margin_right = 300.0
+margin_bottom = 137.0
+rect_min_size = Vector2( 175, 24 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+size_flags_horizontal = 6
+size_flags_vertical = 6
+max_length = 20
+focus_mode = 2
+context_menu_enabled = true
+placeholder_text = "Name"
+placeholder_alpha = 0.6
+caret_blink = true
+caret_blink_speed = 0.65
+caret_position = 0
+_sections_unfolded = [ "Caret", "Placeholder", "Rect" ]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 153.0
 margin_right = 426.0
 margin_bottom = 201.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -173,6 +229,10 @@ flat = false
 align = 1
 
 [connection signal="text_changed" from="VBoxContainer/Name" to="." method="_on_Name_text_changed"]
+
+[connection signal="text_changed" from="VBoxContainer/IPAddress" to="." method="_on_IPAddress_text_changed"]
+
+[connection signal="text_changed" from="VBoxContainer/Port" to="." method="_on_Port_text_changed"]
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/MarginContainer/Create" to="." method="_on_CreateButton_pressed"]
 
