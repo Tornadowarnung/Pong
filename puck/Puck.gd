@@ -28,9 +28,15 @@ func _physics_process(delta):
 func _collide_player(player, normal, pos):
 	movement.x = movement.x * -1
 	movement.y = movement.y + (pos.y - player.position.y) * 15
+	_normalize_speed()
 
 func _collide_wall():
 	movement.y = -movement.y
+	_normalize_speed()
+
+func _normalize_speed():
+	var remainder = SPEED / movement.length()
+	movement = movement * remainder
 
 func _on_screen_exited():
 	position = get_viewport_rect().size / 2
