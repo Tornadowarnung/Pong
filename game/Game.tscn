@@ -13,7 +13,7 @@ extents = Vector2( 640, 10 )
 custom_solver_bias = 0.0
 extents = Vector2( 10, 300 )
 
-[node name="Game" type="Node"]
+[node name="Game" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
@@ -95,5 +95,43 @@ shape = SubResource( 2 )
 
 position = Vector2( 640, 300 )
 _sections_unfolded = [ "Angular", "Applied Forces", "Collision", "Linear", "Transform" ]
+
+[node name="Interface" type="Control" parent="." index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="TimeToStart" type="Label" parent="Interface" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -152.0
+margin_right = -854.0
+margin_bottom = -128.0
+rect_scale = Vector2( 3, 3 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Waiting for second player ..."
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
 
 
