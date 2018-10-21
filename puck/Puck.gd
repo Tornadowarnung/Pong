@@ -3,6 +3,7 @@ extends KinematicBody2D
 const SPEED = 800.0
 const PLAYER_CLASS = preload("res://player/Player.gd")
 
+var started = false
 var movement
 
 slave var slave_position = Vector2()
@@ -13,6 +14,8 @@ func _ready():
 		$VisibilityNotifier2D.connect("screen_exited", self, "_on_screen_exited")
 
 func _physics_process(delta):
+	if !started:
+		return
 	if is_network_master():
 		var collision_info = move_and_collide(movement * delta)
 		rset_unreliable('slave_position', position)
@@ -41,3 +44,6 @@ func _normalize_speed():
 func _on_screen_exited():
 	position = get_viewport_rect().size / 2
 	movement = Vector2(-SPEED, 0)
+
+func start():
+	started = true

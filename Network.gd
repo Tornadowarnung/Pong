@@ -60,3 +60,6 @@ remote func _send_player_info(id, info):
 
 func update_position(id, position):
 	players[id].position = position
+
+func are_all_players_connected():
+	return bool(players.size() == MAX_PLAYERS)
