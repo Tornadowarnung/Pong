@@ -25,7 +25,6 @@ func _process(delta):
 	_start_game()
 
 func _countdown_to_start(delta):
-	print(time_to_start)
 	if GameState.INITIALIZING != game_state || !Network.are_all_players_connected():
 		return
 	if time_to_start > 0:

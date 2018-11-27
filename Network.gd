@@ -14,11 +14,9 @@ func _ready():
 	get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
 
 func set_ip(ip):
-	print(ip)
 	ip_address = ip
 
 func set_port(_port):
-	print(port)
 	port = _port
 
 func create_server(player_nickname):
