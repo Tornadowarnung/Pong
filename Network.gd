@@ -1,5 +1,7 @@
 extends Node
 
+const UPDATE_TIME = 0.06
+
 var ip_address = '127.0.0.1'
 var port = 12345
 const MAX_PLAYERS = 2

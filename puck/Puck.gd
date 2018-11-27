@@ -6,6 +6,8 @@ const PLAYER_CLASS = preload("res://player/Player.gd")
 var started = false
 var movement
 
+var elapsed_rset = 0.0
+
 slave var slave_position = Vector2()
 
 func _ready():
@@ -18,7 +20,13 @@ func _physics_process(delta):
 		return
 	if is_network_master():
 		var collision_info = move_and_collide(movement * delta)
-		rset_unreliable('slave_position', position)
+		
+		if elapsed_rset >= Network.UPDATE_TIME:
+			rset_unreliable('slave_position', position)
+			elapsed_rset = 0.0
+		else:
+			elapsed_rset += delta
+		
 		if collision_info:
 			if collision_info.collider is PLAYER_CLASS:
 				_collide_player(collision_info.collider, collision_info.normal, collision_info.position)
