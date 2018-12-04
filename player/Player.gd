@@ -11,7 +11,7 @@ slave var slave_movement = MoveDirection.NONE
 var health_points = MAX_HP
 var player_name
 
-var elapsed_rset = 0.0
+var since_sent_pos = 0.0
 
 func _ready():
 	_update_health_bar()
@@ -24,12 +24,11 @@ func _physics_process(delta):
 		if Input.is_action_pressed('down'):
 			direction = MoveDirection.DOWN
 
-		if elapsed_rset >= Network.UPDATE_TIME:
+		if since_sent_pos >= Network.UPDATE_TIME:
 			rset_unreliable('slave_position', position)
-			rset('slave_movement', direction)
-			elapsed_rset = 0.0
+			since_sent_pos = 0.0
 		else:
-			elapsed_rset += delta
+			since_sent_pos += delta
 		_move(direction)
 
 	else:

@@ -1,6 +1,6 @@
 extends Node
 
-const UPDATE_TIME = 0.06
+const UPDATE_TIME = 0.05
 
 var ip_address = '127.0.0.1'
 var port = 12345

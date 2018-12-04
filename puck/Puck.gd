@@ -6,7 +6,16 @@ const PLAYER_CLASS = preload("res://player/Player.gd")
 var started = false
 var movement
 
-var elapsed_rset = 0.0
+# Networking variables
+var current_time = 0.0
+# slave
+var curr_fraction = 0
+var new_slave_pos
+var old_slave_pos
+var last_packet_time
+var elapsed = 0.0
+# master
+var since_sent_pos = 0.0
 
 slave var slave_position = Vector2()
 
@@ -15,17 +24,20 @@ func _ready():
 		movement = Vector2(-SPEED, 0)
 		$VisibilityNotifier2D.connect("screen_exited", self, "_on_screen_exited")
 
+func _process(delta):
+	current_time += delta
+
 func _physics_process(delta):
 	if !started:
 		return
 	if is_network_master():
 		var collision_info = move_and_collide(movement * delta)
 		
-		if elapsed_rset >= Network.UPDATE_TIME:
-			rset_unreliable('slave_position', position)
-			elapsed_rset = 0.0
+		if since_sent_pos >= Network.UPDATE_TIME:
+			rpc_unreliable('_set_slave_position', position, current_time + Network.UPDATE_TIME)
+			since_sent_pos = 0.0
 		else:
-			elapsed_rset += delta
+			since_sent_pos += delta
 		
 		if collision_info:
 			if collision_info.collider is PLAYER_CLASS:
@@ -33,8 +45,17 @@ func _physics_process(delta):
 			if collision_info.collider.is_in_group("wall"):
 				_collide_wall()
 	else:
-		position = slave_position
-	
+		if last_packet_time && old_slave_pos && new_slave_pos:
+			curr_fraction = curr_fraction + (delta / elapsed)
+			position = (1 - curr_fraction) * old_slave_pos + curr_fraction * new_slave_pos
+
+remote func _set_slave_position(new_pos, master_time):
+	if last_packet_time:
+		elapsed = (master_time - last_packet_time)
+		new_slave_pos = new_pos
+		old_slave_pos = position
+	last_packet_time = master_time
+	curr_fraction = 0
 
 func _collide_player(player, normal, pos):
 	movement.x = movement.x * -1
