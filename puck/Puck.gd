@@ -17,8 +17,6 @@ var elapsed = 0.0
 # master
 var since_sent_pos = 0.0
 
-slave var slave_position = Vector2()
-
 func _ready():
 	if is_network_master():
 		movement = Vector2(-SPEED, 0)
