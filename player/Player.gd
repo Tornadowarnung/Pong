@@ -5,14 +5,26 @@ const MAX_HP = 100
 
 enum MoveDirection { UP, DOWN, NONE }
 
-slave var slave_position = Vector2()
-slave var slave_movement = MoveDirection.NONE
 
 var health_points = MAX_HP
 var player_name
 
+# Networking variables
+var current_time = 0.0
+# slave
+var curr_fraction = 0
+var new_slave_pos
+var old_slave_pos
+var last_packet_time
+var elapsed = 0.0
+# master
+var since_sent_pos = 0.0
+
 func _ready():
 	_update_health_bar()
+
+func _process(delta):
+	current_time += delta
 
 func _physics_process(delta):
 	var direction = MoveDirection.NONE
@@ -22,16 +34,27 @@ func _physics_process(delta):
 		if Input.is_action_pressed('down'):
 			direction = MoveDirection.DOWN
 
-		rset_unreliable('slave_position', position)
-		rset('slave_movement', direction)
 		_move(direction)
-
+		if since_sent_pos >= Network.UPDATE_TIME:
+			rpc_unreliable('_set_slave_position', position, current_time + Network.UPDATE_TIME)
+			since_sent_pos = 0.0
+		else:
+			since_sent_pos += delta
 	else:
-		_move(slave_movement)
-		position = slave_position
+		if last_packet_time && old_slave_pos && new_slave_pos:
+			curr_fraction = curr_fraction + (delta / elapsed)
+			position = (1 - curr_fraction) * old_slave_pos + curr_fraction * new_slave_pos
 
 	if get_tree().is_network_server():
 		Network.update_position(int(name), position)
+
+remote func _set_slave_position(new_pos, master_time):
+	if last_packet_time:
+		elapsed = (master_time - last_packet_time)
+		new_slave_pos = new_pos
+		old_slave_pos = position
+	last_packet_time = master_time
+	curr_fraction = 0
 
 func _move(direction):
 	match direction:
