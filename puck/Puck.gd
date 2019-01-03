@@ -21,6 +21,8 @@ func _ready():
 	if is_network_master():
 		movement = Vector2(-SPEED, 0)
 		$VisibilityNotifier2D.connect("screen_exited", self, "_on_screen_exited")
+	else:
+		$CollisionShape2D.set_disabled(true)
 
 func _process(delta):
 	current_time += delta
@@ -45,7 +47,7 @@ func _physics_process(delta):
 	else:
 		if last_packet_time && old_slave_pos && new_slave_pos:
 			curr_fraction = curr_fraction + (delta / elapsed)
-			position = (1 - curr_fraction) * old_slave_pos + curr_fraction * new_slave_pos
+			move_and_collide((new_slave_pos - position) * curr_fraction)
 
 remote func _set_slave_position(new_pos, master_time):
 	if last_packet_time:
