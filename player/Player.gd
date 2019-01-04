@@ -42,7 +42,10 @@ func _physics_process(delta):
 			since_sent_pos += delta
 	else:
 		if last_packet_time && old_slave_pos && new_slave_pos:
-			curr_fraction = curr_fraction + (delta / elapsed)
+			if elapsed != 0:
+				curr_fraction = curr_fraction + (delta / elapsed)
+			else:
+				curr_fraction = curr_fraction + delta * 100
 			position = (1 - curr_fraction) * old_slave_pos + curr_fraction * new_slave_pos
 
 	if get_tree().is_network_server():
