@@ -134,4 +134,6 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
+[connection signal="_on_goal" from="Puck" to="." method="_on_goal"]
+
 

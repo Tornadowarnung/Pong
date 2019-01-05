@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal _on_goal
+
 const SPEED = 800.0
 const PLAYER_CLASS = preload("res://player/Player.gd")
 
@@ -74,6 +76,7 @@ func _normalize_speed():
 	movement = movement * remainder
 
 func _on_screen_exited():
+	emit_signal("_on_goal", position.x > get_viewport_rect().size.x)
 	position = get_viewport_rect().size / 2
 	movement = Vector2(-SPEED, 0)
 
