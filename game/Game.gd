@@ -12,12 +12,9 @@ var time_to_start = 3
 var master_score = 0
 var slave_score = 0
 
-const score_to_win = 3
+const score_to_win = 1
 
 func _ready():
-	get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
-	get_tree().connect('server_disconnected', self, '_on_server_disconnected')
-	
 	var new_player = preload('res://player/Player.tscn').instance()
 	new_player.name = str(get_tree().get_network_unique_id())
 	new_player.set_network_master(get_tree().get_network_unique_id())
@@ -45,15 +42,12 @@ func _start_game():
 	$Puck.start()
 
 sync func _end_game():
-	var main_menu = load('res://interface/MainMenu.tscn').instance()
-	get_tree().get_root().add_child(main_menu)
+	if !is_network_master():
+		Network.disconnect()
+	else:
+		Network.disconnect()
+	get_tree().get_root().get_node('MainMenu').show()
 	get_tree().get_root().get_node('Game').queue_free()
-
-func _on_player_disconnected(id):
-	get_node(str(id)).queue_free()
-
-func _on_server_disconnected():
-	get_tree().change_scene('res://interface/MainMenu.tscn')
 
 func _on_goal(master_scored):
 	if master_scored:
@@ -62,5 +56,6 @@ func _on_goal(master_scored):
 	else:
 		slave_score += 1
 		rset('slave_score', slave_score)
+	print("slave: ", slave_score, ", master: ", master_score)
 	if master_score >= score_to_win || slave_score >= score_to_win:
 		rpc('_end_game')

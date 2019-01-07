@@ -48,9 +48,6 @@ func _physics_process(delta):
 				curr_fraction = curr_fraction + delta * 100
 			position = (1 - curr_fraction) * old_slave_pos + curr_fraction * new_slave_pos
 
-	if get_tree().is_network_server():
-		Network.update_position(int(name), position)
-
 remote func _set_slave_position(new_pos, master_time):
 	if last_packet_time:
 		elapsed = (master_time - last_packet_time)

@@ -28,5 +28,7 @@ func _on_JoinButton_pressed():
 	_load_game()
 
 func _load_game():
-	get_tree().change_scene('res://game/Game.tscn')
+	var Game = load('res://game/Game.tscn').instance()
+	get_tree().get_root().add_child(Game)
+	hide()
 
