@@ -1,6 +1,7 @@
 extends Node
 
 const UPDATE_TIME = 0.025
+const MASTER_POSITION = Vector2(30, 300)
 
 var peer
 var ip_address = '127.0.0.1'
@@ -8,7 +9,7 @@ var port = 68282
 const MAX_PLAYERS = 2
 
 var players = { }
-var self_data = { name = '', position = Vector2(30, 300) }
+var self_data = { name = '', position = MASTER_POSITION }
 
 signal player_disconnected
 signal server_disconnected
@@ -25,6 +26,7 @@ func set_port(_port):
 
 func create_server(player_nickname):
 	self_data.name = player_nickname
+	self_data.position = MASTER_POSITION
 	players[1] = self_data
 	peer = NetworkedMultiplayerENet.new()
 	var error = peer.create_server(port, MAX_PLAYERS - 1)
