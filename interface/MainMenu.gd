@@ -2,7 +2,6 @@ extends Control
 
 var _player_name = ""
 var _ip_address = ""
-var _port = ""
 
 func _on_Name_text_changed(new_text):
 	_player_name = new_text
@@ -10,10 +9,6 @@ func _on_Name_text_changed(new_text):
 func _on_IPAddress_text_changed(new_text):
 	_ip_address = new_text
 	Network.set_ip(_ip_address)
-
-func _on_Port_text_changed(new_text):
-	_port = new_text
-	Network.set_port(int(_port))
 
 func _on_CreateButton_pressed():
 	if _player_name == "":

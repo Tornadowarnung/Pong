@@ -21,9 +21,6 @@ func _ready():
 func set_ip(ip):
 	ip_address = ip
 
-func set_port(_port):
-	port = _port
-
 func create_server(player_nickname):
 	self_data.name = player_nickname
 	self_data.position = MASTER_POSITION
