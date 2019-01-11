@@ -25,7 +25,7 @@ size_flags_vertical = 1
 script = ExtResource( 1 )
 _sections_unfolded = [ "Rect" ]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." index="0"]
+[node name="InitialMenu" type="VBoxContainer" parent="." index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -43,16 +43,16 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 2
 
-[node name="Name" type="LineEdit" parent="VBoxContainer" index="0"]
+[node name="Name" type="LineEdit" parent="InitialMenu" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 126.0
-margin_top = 20.0
+margin_top = 37.0
 margin_right = 301.0
-margin_bottom = 44.0
+margin_bottom = 61.0
 rect_min_size = Vector2( 175, 24 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -71,40 +71,13 @@ caret_blink_speed = 0.65
 caret_position = 0
 _sections_unfolded = [ "Caret", "Placeholder", "Rect" ]
 
-[node name="IPAddress" type="LineEdit" parent="VBoxContainer" index="1"]
+[node name="MarginContainer" type="CenterContainer" parent="InitialMenu" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 126.0
-margin_top = 88.0
-margin_right = 301.0
-margin_bottom = 112.0
-rect_min_size = Vector2( 175, 24 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 1
-size_flags_horizontal = 6
-size_flags_vertical = 6
-focus_mode = 2
-context_menu_enabled = true
-placeholder_text = "IP"
-placeholder_alpha = 0.6
-caret_blink = true
-caret_blink_speed = 0.65
-caret_position = 0
-_sections_unfolded = [ "Caret", "Placeholder", "Rect" ]
-
-[node name="MarginContainer" type="CenterContainer" parent="VBoxContainer" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 136.0
+margin_top = 102.0
 margin_right = 427.0
 margin_bottom = 200.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -116,16 +89,16 @@ size_flags_vertical = 3
 use_top_left = false
 _sections_unfolded = [ "Grow Direction" ]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="InitialMenu/MarginContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 95.0
-margin_top = 22.0
+margin_top = 39.0
 margin_right = 331.0
-margin_bottom = 42.0
+margin_bottom = 59.0
 grow_horizontal = 0
 grow_vertical = 0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -139,7 +112,7 @@ custom_constants/separation = 100
 alignment = 1
 _sections_unfolded = [ "Anchor", "Grow Direction", "Rect", "Size Flags", "custom_constants" ]
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/HBoxContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="InitialMenu/MarginContainer/HBoxContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -155,7 +128,7 @@ size_flags_horizontal = 6
 size_flags_vertical = 2
 _sections_unfolded = [ "Margin" ]
 
-[node name="Create" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer/MarginContainer" index="0"]
+[node name="Host" type="Button" parent="InitialMenu/MarginContainer/HBoxContainer/MarginContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -176,11 +149,11 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = SubResource( 1 )
-text = "CREATE"
+text = "HOST"
 flat = false
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/MarginContainer/HBoxContainer" index="1"]
+[node name="MarginContainer2" type="MarginContainer" parent="InitialMenu/MarginContainer/HBoxContainer" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -197,7 +170,7 @@ size_flags_horizontal = 6
 size_flags_vertical = 2
 _sections_unfolded = [ "Margin", "Rect" ]
 
-[node name="Join" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer/MarginContainer2" index="0"]
+[node name="Join" type="Button" parent="InitialMenu/MarginContainer/HBoxContainer/MarginContainer2" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -222,12 +195,191 @@ text = "JOIN"
 flat = false
 align = 1
 
-[connection signal="text_changed" from="VBoxContainer/Name" to="." method="_on_Name_text_changed"]
+[node name="HostMenu" type="VBoxContainer" parent="." index="1"]
 
-[connection signal="text_changed" from="VBoxContainer/IPAddress" to="." method="_on_IPAddress_text_changed"]
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 426.0
+margin_bottom = 200.0
+rect_scale = Vector2( 3, 3 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
 
-[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/MarginContainer/Create" to="." method="_on_CreateButton_pressed"]
+[node name="Back" type="Button" parent="HostMenu" index="0"]
 
-[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/MarginContainer2/Join" to="." method="_on_JoinButton_pressed"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 183.0
+margin_top = 39.0
+margin_right = 243.0
+margin_bottom = 59.0
+rect_min_size = Vector2( 60, 20 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "< BACK"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="Host" type="Button" parent="HostMenu" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 167.0
+margin_top = 141.0
+margin_right = 259.0
+margin_bottom = 161.0
+rect_min_size = Vector2( 60, 20 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "START GAME"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="ClientMenu" type="VBoxContainer" parent="." index="2"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 426.0
+margin_bottom = 200.0
+rect_scale = Vector2( 3, 3 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
+
+[node name="Back" type="Button" parent="ClientMenu" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 183.0
+margin_top = 22.0
+margin_right = 243.0
+margin_bottom = 42.0
+rect_min_size = Vector2( 60, 20 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "< BACK"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="IPAddress" type="LineEdit" parent="ClientMenu" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 125.0
+margin_top = 88.0
+margin_right = 300.0
+margin_bottom = 112.0
+rect_min_size = Vector2( 175, 24 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+size_flags_horizontal = 6
+size_flags_vertical = 6
+focus_mode = 2
+context_menu_enabled = true
+placeholder_text = "IP"
+placeholder_alpha = 0.6
+caret_blink = true
+caret_blink_speed = 0.65
+caret_position = 0
+_sections_unfolded = [ "Caret", "Placeholder", "Rect" ]
+
+[node name="Join" type="Button" parent="ClientMenu" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 167.0
+margin_top = 158.0
+margin_right = 259.0
+margin_bottom = 178.0
+rect_min_size = Vector2( 60, 20 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "START GAME"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[connection signal="text_changed" from="InitialMenu/Name" to="." method="_on_Name_text_changed"]
+
+[connection signal="pressed" from="InitialMenu/MarginContainer/HBoxContainer/MarginContainer/Host" to="." method="_on_CreateButton_pressed"]
+
+[connection signal="pressed" from="InitialMenu/MarginContainer/HBoxContainer/MarginContainer2/Join" to="." method="_on_JoinButton_pressed"]
+
+[connection signal="pressed" from="HostMenu/Back" to="." method="_on_Back_pressed"]
+
+[connection signal="pressed" from="HostMenu/Host" to="." method="_create_server"]
+
+[connection signal="pressed" from="ClientMenu/Back" to="." method="_on_Back_pressed"]
+
+[connection signal="text_changed" from="ClientMenu/IPAddress" to="." method="_on_IPAddress_text_changed"]
+
+[connection signal="pressed" from="ClientMenu/Join" to="." method="_join_server"]
 
 
