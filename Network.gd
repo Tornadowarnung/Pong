@@ -5,7 +5,7 @@ const MASTER_POSITION = Vector2(30, 300)
 
 var peer
 var ip_address = '127.0.0.1'
-var port = 68282
+var port = 12345
 const MAX_PLAYERS = 2
 
 var players = { }
