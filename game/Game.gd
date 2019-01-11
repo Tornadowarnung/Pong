@@ -12,6 +12,8 @@ var time_to_start = 3
 var master_score = 0
 var slave_score = 0
 
+var time_until_ping = 1
+
 const score_to_win = 1
 
 func _ready():
@@ -25,6 +27,12 @@ func _ready():
 func _process(delta):
 	_countdown_to_start(delta)
 	_start_game()
+	
+	time_until_ping -= delta
+	if time_until_ping <= 0:
+		time_until_ping = 1
+		Network._send_ping_request()
+		$Interface/Ping.text = str(Network.current_ping)
 
 func _countdown_to_start(delta):
 	if GameState.INITIALIZING != game_state || !Network.are_all_players_connected():

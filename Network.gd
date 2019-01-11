@@ -1,12 +1,15 @@
 extends Node
 
-const UPDATE_TIME = 0.025
+const UPDATE_TIME = 0.01
 const MASTER_POSITION = Vector2(30, 300)
 
 var peer
 var ip_address = '127.0.0.1'
 var port = 12345
 const MAX_PLAYERS = 2
+
+var ms_at_ping_start = 0
+var current_ping = 0
 
 var players = { }
 var self_data = { name = '', position = MASTER_POSITION }
@@ -65,6 +68,17 @@ remote func _send_player_info(id, info):
 	new_player.set_network_master(id)
 	$'/root/Game/'.add_child(new_player)
 	new_player.init(info.name, info.position, true)
+
+func _send_ping_request():
+	ms_at_ping_start = OS.get_ticks_msec()
+	rpc('_receive_ping_request')
+	
+
+remote func _receive_ping_request():
+	rpc('_ping_response')
+
+remote func _ping_response():
+	current_ping = OS.get_ticks_msec() - ms_at_ping_start
 
 func are_all_players_connected():
 	return bool(players.size() == MAX_PLAYERS)
