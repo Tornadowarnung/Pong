@@ -6,6 +6,8 @@ enum GameState {
 	PAUSED,
 }
 
+var all_players = []
+
 var game_state = GameState.INITIALIZING
 var time_to_start = 3
 
@@ -20,7 +22,7 @@ func _ready():
 	var new_player = preload('res://player/Player.tscn').instance()
 	new_player.name = str(get_tree().get_network_unique_id())
 	new_player.set_network_master(get_tree().get_network_unique_id())
-	add_child(new_player)
+	add_player(new_player)
 	var info = Network.self_data
 	new_player.init(info.name, info.position, false)
 
@@ -48,6 +50,8 @@ func _start_game():
 	if GameState.STARTED != game_state:
 		return
 	$Puck.start()
+	for player in all_players:
+		player.start()
 
 sync func _end_game():
 	if !is_network_master():
@@ -67,3 +71,7 @@ func _on_goal(master_scored):
 	print("slave: ", slave_score, ", master: ", master_score)
 	if master_score >= score_to_win || slave_score >= score_to_win:
 		rpc('_end_game')
+
+func add_player(player):
+	all_players.append(player)
+	add_child(player)

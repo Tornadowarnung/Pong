@@ -5,7 +5,7 @@ signal _on_goal
 const SPEED = 800.0
 const PLAYER_CLASS = preload("res://player/Player.gd")
 
-var started = false
+var active = false
 var movement
 
 # Networking variables
@@ -30,7 +30,7 @@ func _process(delta):
 	current_time += delta
 
 func _physics_process(delta):
-	if !started:
+	if !active:
 		return
 	if is_network_master():
 		var collision_info = move_and_collide(movement * delta)
@@ -81,4 +81,4 @@ func _on_screen_exited():
 	movement = Vector2(-SPEED, 0)
 
 func start():
-	started = true
+	active = true

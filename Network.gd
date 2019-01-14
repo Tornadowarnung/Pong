@@ -66,7 +66,7 @@ remote func _send_player_info(id, info):
 	var new_player = load('res://player/Player.tscn').instance()
 	new_player.name = str(id)
 	new_player.set_network_master(id)
-	$'/root/Game/'.add_child(new_player)
+	$'/root/Game/'.add_player(new_player)
 	new_player.init(info.name, info.position, true)
 
 func _send_ping_request():

@@ -5,6 +5,7 @@ const MAX_HP = 100
 
 enum MoveDirection { UP, DOWN, NONE }
 
+var active = false
 
 var health_points = MAX_HP
 var player_name
@@ -24,9 +25,13 @@ func _ready():
 	_update_health_bar()
 
 func _process(delta):
+	if !active:
+		return
 	current_time += delta
 
 func _physics_process(delta):
+	if !active:
+		return
 	var direction = MoveDirection.NONE
 	if is_network_master():
 		if Input.is_action_pressed('up'):
@@ -73,4 +78,6 @@ func init(nameIn, positionIn, is_slave):
 	position = positionIn
 	if is_slave:
 		$Sprite.set_self_modulate(Color(0.80, 0.25, 0.25))
-		
+
+sync func start():
+	active = true
