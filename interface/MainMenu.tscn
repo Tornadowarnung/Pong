@@ -1,6 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://interface/MainMenu.gd" type="Script" id=1]
+[ext_resource path="res://fonts/changa/Changa-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://fonts/changa-regular.tres" type="DynamicFont" id=3]
+
+[sub_resource type="DynamicFont" id=2]
+
+size = 20
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 2 )
+_sections_unfolded = [ "Font" ]
 
 [sub_resource type="ButtonGroup" id=1]
 
@@ -27,16 +37,14 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="InitialMenu" type="VBoxContainer" parent="." index="0"]
 
+visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = -3.0
-margin_top = 2.0
-margin_right = 424.0
-margin_bottom = 202.0
+margin_right = 1281.0
+margin_bottom = 600.0
 grow_horizontal = 0
-rect_scale = Vector2( 3, 3 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -44,18 +52,79 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 2
+_sections_unfolded = [ "Rect" ]
 
-[node name="Name" type="LineEdit" parent="InitialMenu" index="0"]
+[node name="NameContainer" type="MarginContainer" parent="InitialMenu" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 126.0
-margin_top = 37.0
-margin_right = 301.0
-margin_bottom = 61.0
-rect_min_size = Vector2( 175, 24 )
+margin_right = 1281.0
+margin_bottom = 280.0
+rect_min_size = Vector2( 0, 280 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="WarningContainer" type="MarginContainer" parent="InitialMenu/NameContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 8.0
+margin_right = 1281.0
+margin_bottom = 280.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/margin_top = 150
+
+[node name="NameWarning" type="Label" parent="InitialMenu/NameContainer/WarningContainer" index="0"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 8.0
+margin_top = 196.0
+margin_right = 1273.0
+margin_bottom = 234.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 0, 0, 0.762431 )
+text = "Name cannot be empty!"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "custom_fonts" ]
+
+[node name="Name" type="LineEdit" parent="InitialMenu/NameContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 382.0
+margin_top = 97.0
+margin_right = 907.0
+margin_bottom = 182.0
+rect_min_size = Vector2( 525, 72 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -63,6 +132,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 1
 size_flags_horizontal = 6
 size_flags_vertical = 6
+custom_fonts/font = ExtResource( 3 )
 max_length = 20
 focus_mode = 2
 context_menu_enabled = true
@@ -71,7 +141,7 @@ placeholder_alpha = 0.6
 caret_blink = true
 caret_blink_speed = 0.65
 caret_position = 0
-_sections_unfolded = [ "Caret", "Placeholder", "Rect" ]
+_sections_unfolded = [ "Rect" ]
 
 [node name="MarginContainer" type="CenterContainer" parent="InitialMenu" index="1"]
 
@@ -79,9 +149,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 102.0
-margin_right = 427.0
-margin_bottom = 200.0
+margin_top = 284.0
+margin_right = 1281.0
+margin_bottom = 600.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -97,10 +167,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 95.0
-margin_top = 39.0
-margin_right = 331.0
-margin_bottom = 59.0
+margin_left = 402.0
+margin_top = 117.0
+margin_right = 878.0
+margin_bottom = 198.0
 grow_horizontal = 0
 grow_vertical = 0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -120,8 +190,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 68.0
-margin_bottom = 20.0
+margin_right = 188.0
+margin_bottom = 81.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -137,9 +207,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 8.0
-margin_right = 68.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 60, 20 )
+margin_right = 188.0
+margin_bottom = 81.0
+rect_min_size = Vector2( 180, 60 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -147,6 +217,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 4
+custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -161,9 +232,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 168.0
-margin_right = 236.0
-margin_bottom = 20.0
+margin_left = 288.0
+margin_right = 476.0
+margin_bottom = 81.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -179,9 +250,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 8.0
-margin_right = 68.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 60, 20 )
+margin_right = 188.0
+margin_bottom = 81.0
+rect_min_size = Vector2( 180, 60 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -189,6 +260,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 4
+custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -199,14 +271,12 @@ align = 1
 
 [node name="HostMenu" type="VBoxContainer" parent="." index="1"]
 
-visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 426.0
-margin_bottom = 200.0
-rect_scale = Vector2( 3, 3 )
+margin_right = 1278.0
+margin_bottom = 600.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -214,6 +284,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 0
+_sections_unfolded = [ "Rect" ]
 
 [node name="Back" type="Button" parent="HostMenu" index="0"]
 
@@ -221,10 +292,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 183.0
-margin_top = 39.0
-margin_right = 243.0
-margin_bottom = 59.0
+margin_left = 574.0
+margin_top = 86.0
+margin_right = 704.0
+margin_bottom = 167.0
 rect_min_size = Vector2( 60, 20 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -233,6 +304,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 6
 size_flags_vertical = 6
+custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -240,18 +312,85 @@ group = null
 text = "< BACK"
 flat = false
 align = 1
-_sections_unfolded = [ "Rect", "Size Flags" ]
+_sections_unfolded = [ "Rect", "Size Flags", "custom_fonts" ]
 
-[node name="Host" type="Button" parent="HostMenu" index="1"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HostMenu" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 167.0
-margin_top = 141.0
-margin_right = 259.0
-margin_bottom = 161.0
+margin_left = 460.0
+margin_top = 257.0
+margin_right = 817.0
+margin_bottom = 342.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 0
+_sections_unfolded = [ "Focus", "Mouse", "Rect", "Size Flags" ]
+
+[node name="ScoreLabel" type="Label" parent="HostMenu/HBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 223.0
+margin_bottom = 80.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 3 )
+text = "Score to win:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="ScoreInput" type="LineEdit" parent="HostMenu/HBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 227.0
+margin_right = 357.0
+margin_bottom = 85.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 3 )
+max_length = 3
+focus_mode = 2
+context_menu_enabled = true
+placeholder_text = "3"
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+caret_position = 0
+_sections_unfolded = [ "Caret", "Placeholder" ]
+
+[node name="Host" type="Button" parent="HostMenu" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 528.0
+margin_top = 432.0
+margin_right = 750.0
+margin_bottom = 513.0
 rect_min_size = Vector2( 60, 20 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -260,6 +399,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 6
 size_flags_vertical = 6
+custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -276,9 +416,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 426.0
-margin_bottom = 200.0
-rect_scale = Vector2( 3, 3 )
+margin_right = 1278.0
+margin_bottom = 600.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -286,6 +425,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 0
+_sections_unfolded = [ "Rect" ]
 
 [node name="Back" type="Button" parent="ClientMenu" index="0"]
 
@@ -293,11 +433,11 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 183.0
-margin_top = 22.0
-margin_right = 243.0
-margin_bottom = 42.0
-rect_min_size = Vector2( 60, 20 )
+margin_left = 549.0
+margin_top = 58.0
+margin_right = 729.0
+margin_bottom = 139.0
+rect_min_size = Vector2( 180, 60 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -305,6 +445,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 6
 size_flags_vertical = 6
+custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -320,18 +461,20 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 125.0
-margin_top = 88.0
-margin_right = 300.0
-margin_bottom = 112.0
-rect_min_size = Vector2( 175, 24 )
+margin_left = 376.0
+margin_top = 257.0
+margin_right = 901.0
+margin_bottom = 342.0
+rect_min_size = Vector2( 525, 72 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
+hint_tooltip = "The IP-Address of the server to connect to"
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 1
 size_flags_horizontal = 6
 size_flags_vertical = 6
+custom_fonts/font = ExtResource( 3 )
 focus_mode = 2
 context_menu_enabled = true
 placeholder_text = "IP"
@@ -347,11 +490,11 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 167.0
-margin_top = 158.0
-margin_right = 259.0
-margin_bottom = 178.0
-rect_min_size = Vector2( 60, 20 )
+margin_left = 528.0
+margin_top = 460.0
+margin_right = 750.0
+margin_bottom = 541.0
+rect_min_size = Vector2( 222, 81 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -359,6 +502,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 6
 size_flags_vertical = 6
+custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -366,9 +510,9 @@ group = null
 text = "START GAME"
 flat = false
 align = 1
-_sections_unfolded = [ "Rect", "Size Flags" ]
+_sections_unfolded = [ "Rect" ]
 
-[connection signal="text_changed" from="InitialMenu/Name" to="." method="_on_Name_text_changed"]
+[connection signal="text_changed" from="InitialMenu/NameContainer/Name" to="." method="_on_Name_text_changed"]
 
 [connection signal="pressed" from="InitialMenu/MarginContainer/HBoxContainer/MarginContainer/Host" to="." method="_on_CreateButton_pressed"]
 

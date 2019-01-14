@@ -8,6 +8,7 @@ enum AVAILABLE_MENUES{
 
 var _player_name = ""
 var _ip_address = ""
+var _winning_score = 3
 var current_menu = AVAILABLE_MENUES.Initial
 
 func _ready():
@@ -22,11 +23,13 @@ func _on_IPAddress_text_changed(new_text):
 
 func _on_CreateButton_pressed():
 	if _player_name == "":
+		$InitialMenu/NameContainer/WarningContainer/NameWarning.show()
 		return
 	_change_menu_to(AVAILABLE_MENUES.Host)
 
 func _on_JoinButton_pressed():
 	if _player_name == "":
+		$InitialMenu/NameContainer/WarningContainer/NameWarning.show()
 		return
 	_change_menu_to(AVAILABLE_MENUES.Client)
 
