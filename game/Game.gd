@@ -17,6 +17,7 @@ var slave_score = 0
 var time_until_ping = 1
 
 var score_to_win
+var ping_visible
 
 func _ready():
 	var new_player = preload('res://player/Player.tscn').instance()
@@ -25,6 +26,11 @@ func _ready():
 	add_player(new_player)
 	var info = Network.self_data
 	new_player.init(info.name, info.position, false)
+	
+	if ping_visible:
+		$Interface/Ping.show()
+	else:
+		$Interface/Ping.hide()
 
 func _process(delta):
 	_countdown_to_start(delta)

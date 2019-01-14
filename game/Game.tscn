@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://game/Game.gd" type="Script" id=1]
 [ext_resource path="res://puck/Puck.tscn" type="PackedScene" id=2]
+[ext_resource path="res://fonts/changa/Changa-Regular.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://fonts/changa-regular.tres" type="DynamicFont" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -13,7 +15,14 @@ extents = Vector2( 640, 10 )
 custom_solver_bias = 0.0
 extents = Vector2( 10, 300 )
 
-[node name="Game" type="Node"]
+[sub_resource type="DynamicFont" id=3]
+
+size = 20
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 3 )
+
+[node name="Game" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
@@ -110,50 +119,69 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 _sections_unfolded = [ "Rect" ]
 
-[node name="TimeToStart" type="Label" parent="Interface" index="0"]
+[node name="Ping" type="Label" parent="Interface" index="0"]
 
 anchor_left = 0.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_top = -152.0
-margin_right = -854.0
-margin_bottom = -128.0
-rect_scale = Vector2( 3, 3 )
+anchor_top = 1.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+margin_left = 79.0
+margin_top = -28.0
+margin_right = 160.0
+margin_bottom = 10.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
+custom_fonts/font = SubResource( 3 )
+text = "PING"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_fonts" ]
+
+[node name="CenterContainer" type="CenterContainer" parent="Interface" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1277.0
+margin_bottom = 299.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+use_top_left = false
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="TimeToStart" type="Label" parent="Interface/CenterContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 396.0
+margin_top = 112.0
+margin_right = 880.0
+margin_bottom = 187.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 4 )
 text = "Waiting for second player ..."
 align = 1
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Ping" type="Label" parent="Interface" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 40.0
-margin_bottom = 14.0
-rect_scale = Vector2( 2, 2 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "PING"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
 
 [connection signal="_on_goal" from="Puck" to="." method="_on_goal"]
 
