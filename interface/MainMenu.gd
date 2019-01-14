@@ -46,6 +46,7 @@ func _on_Back_pressed():
 
 func _load_game():
 	var Game = load('res://game/Game.tscn').instance()
+	Game.score_to_win = _winning_score
 	get_tree().get_root().add_child(Game)
 	hide()
 
@@ -72,3 +73,8 @@ func _change_menu_to(menu):
 func _hide_all_menues():
 	for menu in get_children():
 		menu.hide()
+
+
+func _on_ScoreInput_text_changed(new_text):
+	if int(new_text) > 0:
+		_winning_score = int(new_text)

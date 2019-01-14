@@ -4,7 +4,7 @@
 [ext_resource path="res://fonts/changa/Changa-Regular.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://fonts/changa-regular.tres" type="DynamicFont" id=3]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=2]
 
 size = 20
 use_mipmaps = false
@@ -12,9 +12,10 @@ use_filter = false
 font_data = ExtResource( 2 )
 _sections_unfolded = [ "Font" ]
 
-[sub_resource type="ButtonGroup" id=2]
+[sub_resource type="ButtonGroup" id=1]
 
 resource_local_to_scene = true
+resource_name = "StartButtons"
 _sections_unfolded = [ "Resource" ]
 
 [node name="MainMenu" type="Control" index="0"]
@@ -104,7 +105,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 1, 0, 0, 0.762431 )
 text = "Name cannot be empty!"
 align = 1
@@ -220,7 +221,7 @@ custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-group = SubResource( 2 )
+group = SubResource( 1 )
 text = "HOST"
 flat = false
 align = 1
@@ -263,7 +264,7 @@ custom_fonts/font = ExtResource( 3 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-group = SubResource( 2 )
+group = SubResource( 1 )
 text = "JOIN"
 flat = false
 align = 1
@@ -518,6 +519,8 @@ _sections_unfolded = [ "Rect" ]
 [connection signal="pressed" from="InitialMenu/MarginContainer/HBoxContainer/MarginContainer2/Join" to="." method="_on_JoinButton_pressed"]
 
 [connection signal="pressed" from="HostMenu/Back" to="." method="_on_Back_pressed"]
+
+[connection signal="text_changed" from="HostMenu/HBoxContainer/ScoreInput" to="." method="_on_ScoreInput_text_changed"]
 
 [connection signal="pressed" from="HostMenu/Host" to="." method="_create_server"]
 

@@ -16,7 +16,7 @@ var slave_score = 0
 
 var time_until_ping = 1
 
-const score_to_win = 1
+var score_to_win
 
 func _ready():
 	var new_player = preload('res://player/Player.tscn').instance()
