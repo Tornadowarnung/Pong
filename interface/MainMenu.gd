@@ -10,9 +10,6 @@ var _player_name = ""
 var _ip_address = ""
 var current_menu = AVAILABLE_MENUES.Initial
 
-var _winning_score = 3
-var _show_ping = false
-
 func _ready():
 	_change_menu_to(current_menu)
 
@@ -48,8 +45,6 @@ func _on_Back_pressed():
 
 func _load_game():
 	var Game = load('res://game/Game.tscn').instance()
-	Game.score_to_win = _winning_score
-	Game.ping_visible = _show_ping
 	get_tree().get_root().add_child(Game)
 	hide()
 
@@ -80,9 +75,9 @@ func _hide_all_menues():
 
 func _on_ScoreInput_text_changed(new_text):
 	if int(new_text) > 0:
-		_winning_score = int(new_text)
+		GameStorage.score_to_win = int(new_text)
 
 func _on_PingInput_toggled(button_pressed):
-	_show_ping = button_pressed
+	GameStorage.ping_visible = button_pressed
 	$ClientMenu/Pingcontainer2/PingInput.pressed = button_pressed
 	$HostMenu/Pingcontainer/PingInput.pressed = button_pressed

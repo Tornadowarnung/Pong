@@ -16,9 +16,6 @@ var slave_score = 0
 
 var time_until_ping = 1
 
-var score_to_win
-var ping_visible
-
 func _ready():
 	var new_player = preload('res://player/Player.tscn').instance()
 	new_player.name = str(get_tree().get_network_unique_id())
@@ -27,7 +24,7 @@ func _ready():
 	var info = Network.self_data
 	new_player.init(info.name, info.position, false)
 	
-	if ping_visible:
+	if GameStorage.ping_visible:
 		$Interface/Ping.show()
 	else:
 		$Interface/Ping.hide()
@@ -46,11 +43,11 @@ func _countdown_to_start(delta):
 	if GameState.INITIALIZING != game_state || !Network.are_all_players_connected():
 		return
 	if time_to_start > 0:
-		$Interface/TimeToStart.text = str(int(time_to_start) + 1)
+		$Interface/CenterContainer/TimeToStart.text = str(int(time_to_start) + 1)
 		time_to_start -= delta
 	else: 
 		game_state = GameState.STARTED
-		$Interface/TimeToStart.hide()
+		$Interface/CenterContainer/TimeToStart.hide()
 
 func _start_game():
 	if GameState.STARTED != game_state:
@@ -75,7 +72,7 @@ func _on_goal(master_scored):
 		slave_score += 1
 		rset('slave_score', slave_score)
 	print("slave: ", slave_score, ", master: ", master_score)
-	if master_score >= score_to_win || slave_score >= score_to_win:
+	if master_score >= GameStorage.score_to_win || slave_score >= GameStorage.score_to_win:
 		rpc('_end_game')
 
 func add_player(player):

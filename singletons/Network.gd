@@ -71,11 +71,11 @@ remote func _send_player_info(id, info):
 
 func _send_ping_request():
 	ms_at_ping_start = OS.get_ticks_msec()
-	rpc('_receive_ping_request')
+	rpc_unreliable('_receive_ping_request')
 	
 
 remote func _receive_ping_request():
-	rpc('_ping_response')
+	rpc_unreliable('_ping_response')
 
 remote func _ping_response():
 	current_ping = OS.get_ticks_msec() - ms_at_ping_start
