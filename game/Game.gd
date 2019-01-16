@@ -16,7 +16,12 @@ var slave_score = 0
 
 var time_until_ping = 1
 
+var score_to_win_was_already_updated = false
+
 func _ready():
+	rset_config('master_score', Node.RPC_MODE_SYNC)
+	rset_config('slave_score', Node.RPC_MODE_SYNC)
+	
 	var new_player = preload('res://player/Player.tscn').instance()
 	new_player.name = str(get_tree().get_network_unique_id())
 	new_player.set_network_master(get_tree().get_network_unique_id())
@@ -28,6 +33,8 @@ func _ready():
 		$Interface/Ping.show()
 	else:
 		$Interface/Ping.hide()
+	
+	$Interface/GameStartContainer/GameStartContainer/ScoreToWin.text += str(GameStorage.score_to_win)
 
 func _process(delta):
 	_countdown_to_start(delta)
@@ -42,12 +49,14 @@ func _process(delta):
 func _countdown_to_start(delta):
 	if GameState.INITIALIZING != game_state || !Network.are_all_players_connected():
 		return
+	if is_network_master():
+		rpc('_update_score_to_win_label', GameStorage.score_to_win)
 	if time_to_start > 0:
-		$Interface/CenterContainer/TimeToStart.text = str(int(time_to_start) + 1)
+		$Interface/GameStartContainer/GameStartContainer/TimeToStart.text = str(int(time_to_start) + 1)
 		time_to_start -= delta
 	else: 
 		game_state = GameState.STARTED
-		$Interface/CenterContainer/TimeToStart.hide()
+		$Interface/GameStartContainer.hide()
 
 func _start_game():
 	if GameState.STARTED != game_state:
@@ -71,9 +80,19 @@ func _on_goal(master_scored):
 	else:
 		slave_score += 1
 		rset('slave_score', slave_score)
-	print("slave: ", slave_score, ", master: ", master_score)
+	rpc('_update_score_labels')
 	if master_score >= GameStorage.score_to_win || slave_score >= GameStorage.score_to_win:
 		rpc('_end_game')
+
+sync func _update_score_labels():
+	$Interface/ScoreContainer/CenterContainer/MasterScoreLabel.text = str(master_score)
+	$Interface/ScoreContainer/CenterContainer2/ClientScoreLabel.text = str(slave_score)
+
+remote func _update_score_to_win_label(winning_score):
+	if score_to_win_was_already_updated:
+		return
+	$Interface/GameStartContainer/GameStartContainer/ScoreToWin.text = "Score to win: " + str(winning_score)
+	score_to_win_was_already_updated = true
 
 func add_player(player):
 	all_players.append(player)
