@@ -1,26 +1,21 @@
 extends Node
 
-enum GameState {
-	INITIALIZING,
-	STARTED,
-	PAUSED,
-}
+const START_TIMER_WAIT = 3
 
 var all_players = []
 
-var game_state = GameState.INITIALIZING
-var time_to_start = 3
-
-var master_score = 0
-var slave_score = 0
-
-var time_until_ping = 1
-
-var score_to_win_was_already_updated = false
+var start_timer = Timer.new()
 
 func _ready():
-	rset_config('master_score', Node.RPC_MODE_SYNC)
-	rset_config('slave_score', Node.RPC_MODE_SYNC)
+	GameState.connect('score_changed', self, '_update_score_labels')
+	GameState.connect('init_params_changed', self, '_on_init_params_changed')
+	GameState.connect('started_game', self, '_start_game')
+	GameState.connect('ended_game', self, '_end_game')
+	
+	start_timer.connect('timeout', GameState, 'start_game')	
+	
+	Network.connect('ping_changed', self, '_on_ping_change')
+	get_tree().connect('network_peer_connected', self, '_start_initial_countdown')
 	
 	var new_player = preload('res://player/Player.tscn').instance()
 	new_player.name = str(get_tree().get_network_unique_id())
@@ -29,70 +24,49 @@ func _ready():
 	var info = Network.self_data
 	new_player.init(info.name, info.position, false)
 	
-	if GameStorage.ping_visible:
+	if GameState.Settings.ping_visible:
 		$Interface/Ping.show()
 	else:
 		$Interface/Ping.hide()
 	
-	$Interface/GameStartContainer/GameStartContainer/ScoreToWin.text += str(GameStorage.score_to_win)
+	$Interface/GameStartContainer/GameStartContainer/ScoreToWin.text += str(GameState.InitParams.score_to_win)
+
+func _start_initial_countdown(id):
+	start_timer.set_wait_time(START_TIMER_WAIT)
+	start_timer.set_one_shot(true)
+	add_child(start_timer)
+	start_timer.start()
 
 func _process(delta):
-	_countdown_to_start(delta)
-	_start_game()
-	
-	time_until_ping -= delta
-	if time_until_ping <= 0:
-		time_until_ping = 1
-		Network._send_ping_request()
-		$Interface/Ping.text = str(Network.current_ping)
-
-func _countdown_to_start(delta):
-	if GameState.INITIALIZING != game_state || !Network.are_all_players_connected():
-		return
-	if is_network_master():
-		rpc('_update_score_to_win_label', GameStorage.score_to_win)
-	if time_to_start > 0:
-		$Interface/GameStartContainer/GameStartContainer/TimeToStart.text = str(int(time_to_start) + 1)
-		time_to_start -= delta
-	else: 
-		game_state = GameState.STARTED
-		$Interface/GameStartContainer.hide()
+	if !start_timer.is_stopped():
+		$Interface/GameStartContainer/GameStartContainer/TimeToStart.text = str(int(start_timer.get_time_left()) + 1)
 
 func _start_game():
-	if GameState.STARTED != game_state:
-		return
+	$Interface/GameStartContainer.hide()
 	$Puck.start()
 	for player in all_players:
 		player.start()
 
 sync func _end_game():
-	if !is_network_master():
-		Network.disconnect()
-	else:
-		Network.disconnect()
+	Network.disconnect()
 	get_tree().get_root().get_node('MainMenu').show()
 	get_tree().get_root().get_node('Game').queue_free()
 
 func _on_goal(master_scored):
 	if master_scored:
-		master_score += 1
-		rset('master_score', master_score)
+		GameState.Score.master_score += 1
 	else:
-		slave_score += 1
-		rset('slave_score', slave_score)
-	rpc('_update_score_labels')
-	if master_score >= GameStorage.score_to_win || slave_score >= GameStorage.score_to_win:
-		rpc('_end_game')
+		GameState.Score.slave_score += 1
 
-sync func _update_score_labels():
-	$Interface/ScoreContainer/CenterContainer/MasterScoreLabel.text = str(master_score)
-	$Interface/ScoreContainer/CenterContainer2/ClientScoreLabel.text = str(slave_score)
+func _update_score_labels(score):
+	$Interface/ScoreContainer/CenterContainer/MasterScoreLabel.text = str(score.master_score)
+	$Interface/ScoreContainer/CenterContainer2/ClientScoreLabel.text = str(score.slave_score)
 
-remote func _update_score_to_win_label(winning_score):
-	if score_to_win_was_already_updated:
-		return
-	$Interface/GameStartContainer/GameStartContainer/ScoreToWin.text = "Score to win: " + str(winning_score)
-	score_to_win_was_already_updated = true
+func _on_init_params_changed(params):
+	$Interface/GameStartContainer/GameStartContainer/ScoreToWin.text = "Score to win: " + str(params.score_to_win)
+
+func _on_ping_change(ping):
+	$Interface/Ping.text = str(ping)
 
 func add_player(player):
 	all_players.append(player)

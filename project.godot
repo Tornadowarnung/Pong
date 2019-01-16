@@ -17,7 +17,7 @@ config/icon="res://pong-icon.png"
 [autoload]
 
 Network="*res://singletons/Network.gd"
-GameStorage="*res://singletons/GameStorage.gd"
+GameState="*res://singletons/GameState.gd"
 
 [display]
 

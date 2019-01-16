@@ -11,6 +11,8 @@ var _ip_address = ""
 var current_menu = AVAILABLE_MENUES.Initial
 
 func _ready():
+	GameState.connect('started_initialization', self, 'hide')
+	GameState.connect('returned_to_menu', self, 'show')
 	_change_menu_to(current_menu)
 
 func _on_Name_text_changed(new_text):
@@ -34,19 +36,14 @@ func _on_JoinButton_pressed():
 
 func _create_server():
 	Network.create_server(_player_name)
-	_load_game()
+	GameState.start_initialization()
 
 func _join_server():
 	Network.connect_to_server(_player_name)
-	_load_game()
+	GameState.start_initialization()
 
 func _on_Back_pressed():
 	_change_menu_to(AVAILABLE_MENUES.Initial)
-
-func _load_game():
-	var Game = load('res://game/Game.tscn').instance()
-	get_tree().get_root().add_child(Game)
-	hide()
 
 func _change_menu_to(menu):
 	match menu:
@@ -75,9 +72,10 @@ func _hide_all_menues():
 
 func _on_ScoreInput_text_changed(new_text):
 	if int(new_text) > 0:
-		GameStorage.score_to_win = int(new_text)
+		GameState.InitParams.score_to_win = int(new_text)
+		pass
 
 func _on_PingInput_toggled(button_pressed):
-	GameStorage.ping_visible = button_pressed
+	GameState.Settings.ping_visible = button_pressed
 	$ClientMenu/Pingcontainer2/PingInput.pressed = button_pressed
 	$HostMenu/Pingcontainer/PingInput.pressed = button_pressed
