@@ -9,6 +9,9 @@ var port = 12345
 const MAX_PLAYERS = 2
 
 signal ping_changed
+signal ticked
+
+var tick_timer = Timer.new()
 
 var Ping = {	
 	start_time = 0,
@@ -23,6 +26,12 @@ func _ready():
 	get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
 	get_tree().connect('server_disconnected', self, '_on_server_disconnected')
 	get_tree().connect('connected_to_server', self, '_connected_to_server')
+	
+	tick_timer.connect('timeout', self, '_on_tick_timer_timeout')
+	tick_timer.set_wait_time(UPDATE_TIME)
+	tick_timer.set_one_shot(false)
+	add_child(tick_timer)
+	tick_timer.start()
 	
 	Ping.timer.connect('timeout', self, '_send_ping_request')
 	Ping.timer.set_wait_time(1)
@@ -97,6 +106,9 @@ func are_all_players_connected():
 func disconnect():
 	players.clear()
 	peer.close_connection()
+
+func _on_tick_timer_timeout():
+	emit_signal('ticked')
 
 func is_server():
 	return _has_active_connections() and get_tree().is_network_server()

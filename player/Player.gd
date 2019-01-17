@@ -18,11 +18,9 @@ var new_slave_pos
 var old_slave_pos
 var last_packet_time
 var elapsed = 0.0
-# master
-var since_sent_pos = 0.0
 
 func _ready():
-	_update_health_bar()
+	Network.connect('ticked', self, '_on_network_tick')
 
 func _process(delta):
 	if !active:
@@ -40,11 +38,6 @@ func _physics_process(delta):
 			direction = MoveDirection.DOWN
 
 		_move(direction)
-		if since_sent_pos >= Network.UPDATE_TIME:
-			rpc_unreliable('_set_slave_position', position, current_time + Network.UPDATE_TIME)
-			since_sent_pos = 0.0
-		else:
-			since_sent_pos += delta
 	else:
 		if last_packet_time && old_slave_pos && new_slave_pos:
 			if elapsed != 0:
@@ -52,6 +45,10 @@ func _physics_process(delta):
 			else:
 				curr_fraction = curr_fraction + delta * 100
 			position = (1 - curr_fraction) * old_slave_pos + curr_fraction * new_slave_pos
+
+func _on_network_tick():
+	if Network._has_active_connections():
+		rpc_unreliable('_set_slave_position', position, current_time + Network.UPDATE_TIME)
 
 remote func _set_slave_position(new_pos, master_time):
 	if last_packet_time:
@@ -69,9 +66,6 @@ func _move(direction):
 			move_and_collide(Vector2(0, -MOVE_SPEED))
 		MoveDirection.DOWN:
 			move_and_collide(Vector2(0, MOVE_SPEED))
-
-func _update_health_bar():
-	return
 
 func init(nameIn, positionIn, is_slave):
 	player_name = nameIn

@@ -16,10 +16,9 @@ var new_slave_pos
 var old_slave_pos
 var last_packet_time
 var elapsed = 0.0
-# master
-var since_sent_pos = 0.0
 
 func _ready():
+	Network.connect('ticked', self, '_on_network_tick')
 	if is_network_master():
 		movement = Vector2(-SPEED, 0)
 		$VisibilityNotifier2D.connect("screen_exited", self, "_on_screen_exited")
@@ -35,12 +34,6 @@ func _physics_process(delta):
 	if is_network_master():
 		var collision_info = move_and_collide(movement * delta)
 		
-		if since_sent_pos >= Network.UPDATE_TIME:
-			rpc_unreliable('_set_slave_position', position, current_time + Network.UPDATE_TIME)
-			since_sent_pos = 0.0
-		else:
-			since_sent_pos += delta
-		
 		if collision_info:
 			if collision_info.collider is PLAYER_CLASS:
 				_collide_player(collision_info.collider, collision_info.normal, collision_info.position)
@@ -53,6 +46,10 @@ func _physics_process(delta):
 			else:
 				curr_fraction = curr_fraction + delta * 100
 			move_and_collide((new_slave_pos - position) * curr_fraction)
+
+func _on_network_tick():
+	if Network._has_active_connections():
+		rpc_unreliable('_set_slave_position', position, current_time + Network.UPDATE_TIME)
 
 remote func _set_slave_position(new_pos, master_time):
 	if last_packet_time:
