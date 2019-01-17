@@ -56,8 +56,9 @@ func start_initialization():
 	if state == STATE.INITIALIZING:
 		return
 	_reset_score()
-	var Game = load('res://game/Game.tscn').instance()
-	get_tree().get_root().add_child(Game)
+	if !get_tree().get_root().has_node('Game'):
+		var Game = load('res://game/Game.tscn').instance()
+		get_tree().get_root().add_child(Game)
 	state = STATE.INITIALIZING
 	emit_signal('started_initialization')
 
@@ -75,10 +76,18 @@ func end_game():
 	if state == STATE.ENDED:
 		return
 	state = STATE.ENDED
-	emit_signal('ended_game')
+	emit_signal('ended_game', _has_won())
+
+func _has_won():
+	if Network.is_server() and Score.master_score >= InitParams.score_to_win \
+		or !Network.is_server() and Score.slave_score >= InitParams.score_to_win:
+		return true
+	return false
 
 func return_to_menu():
 	if state == STATE.MENU:
 		return
 	state = STATE.MENU
+	get_tree().get_root().get_node('Game').queue_free()
+	get_tree().get_root().get_node('MainMenu').show()
 	emit_signal('returned_to_menu')

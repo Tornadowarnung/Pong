@@ -79,3 +79,6 @@ func _on_screen_exited():
 
 func start():
 	active = true
+
+func stop():
+	active = false

@@ -27,6 +27,8 @@ func _ready():
 	get_tree().connect('server_disconnected', self, '_on_server_disconnected')
 	get_tree().connect('connected_to_server', self, '_connected_to_server')
 	
+	GameState.connect('returned_to_menu', self, 'disconnect')
+	
 	tick_timer.connect('timeout', self, '_on_tick_timer_timeout')
 	tick_timer.set_wait_time(UPDATE_TIME)
 	tick_timer.set_one_shot(false)
@@ -71,8 +73,6 @@ func _on_server_disconnected():
 	print('Server disconnected')
 	players.clear()
 	peer.close_connection()
-	get_tree().get_root().get_node('MainMenu').show()
-	get_tree().get_root().get_node('Game').queue_free()
 
 remote func _send_player_info(id, info):
 	if get_tree().is_network_server():

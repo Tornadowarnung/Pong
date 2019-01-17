@@ -16,6 +16,8 @@ func _ready():
 	
 	Network.connect('ping_changed', self, '_on_ping_change')
 	get_tree().connect('network_peer_connected', self, '_start_initial_countdown')
+	get_tree().connect('network_peer_disconnected', self, '_hide_replay_button')
+	get_tree().connect('server_disconnected', self, '_hide_replay_button')
 	
 	var new_player = preload('res://player/Player.tscn').instance()
 	new_player.name = str(get_tree().get_network_unique_id())
@@ -30,6 +32,7 @@ func _ready():
 		$Interface/Ping.hide()
 	
 	$Interface/GameStartContainer/GameStartContainer/ScoreToWin.text += str(GameState.InitParams.score_to_win)
+	$Interface/GameEndedDialogue.hide()
 
 func _start_initial_countdown(id):
 	start_timer.set_wait_time(START_TIMER_WAIT)
@@ -47,10 +50,17 @@ func _start_game():
 	for player in all_players:
 		player.start()
 
-sync func _end_game():
-	Network.disconnect()
-	get_tree().get_root().get_node('MainMenu').show()
-	get_tree().get_root().get_node('Game').queue_free()
+sync func _end_game(has_won):
+	$Puck.stop()
+	for player in all_players:
+		player.stop()
+	if !has_won:
+		$Interface/GameEndedDialogue/VBoxContainer/Title.text = "You've lost"
+	$Interface/GameEndedDialogue.show()
+
+func _hide_replay_button(id = 0):
+	$Interface/GameEndedDialogue/VBoxContainer/Warning.show()
+	$Interface/GameEndedDialogue/VBoxContainer/Buttons/ReplayButton.set_disabled(true)
 
 func _on_goal(master_scored):
 	if master_scored:
@@ -71,3 +81,6 @@ func _on_ping_change(ping):
 func add_player(player):
 	all_players.append(player)
 	add_child(player)
+
+func _on_BackButton_pressed():
+	GameState.return_to_menu()

@@ -75,3 +75,6 @@ func init(nameIn, positionIn, is_slave):
 
 sync func start():
 	active = true
+
+func stop():
+	active = false
