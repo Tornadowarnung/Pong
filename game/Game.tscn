@@ -572,8 +572,6 @@ flat = false
 align = 1
 _sections_unfolded = [ "custom_fonts" ]
 
-[connection signal="scored_goal" from="Puck" to="." method="_on_goal"]
-
 [connection signal="pressed" from="Interface/GameEndedDialogue/VBoxContainer/Buttons/BackButton" to="." method="_on_BackButton_pressed"]
 
 [connection signal="pressed" from="Interface/GameEndedDialogue/VBoxContainer/Buttons/ReplayButton" to="." method="_on_ReplayButton_pressed"]

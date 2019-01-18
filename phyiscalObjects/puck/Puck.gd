@@ -26,6 +26,7 @@ func master_movement(delta):
 func _collide_player(player, normal, pos):
 	movement.x = movement.x * -1
 	movement.y = movement.y + (pos.y - player.position.y) * 15
+	movement.y = clamp(movement.y, -700, 700)
 	_normalize_speed()
 
 func _collide_wall():

@@ -15,6 +15,8 @@ func _ready():
 	get_tree().connect('network_peer_disconnected', self, '_hide_replay_button')
 	get_tree().connect('server_disconnected', self, '_hide_replay_button')
 	
+	$Puck.connect('scored_goal', self, '_on_goal')
+	
 	var new_player = preload('res://phyiscalObjects/player/Player.tscn').instance()
 	new_player.name = str(get_tree().get_network_unique_id())
 	new_player.set_network_master(get_tree().get_network_unique_id())
