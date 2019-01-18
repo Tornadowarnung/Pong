@@ -56,6 +56,7 @@ func set_score(new_score):
 				end_game()
 	if Network.is_server():
 		rset('Score', Score)
+	print('score was changed')
 	emit_signal('score_changed', Score)
 
 remote func start_initialization():
@@ -74,8 +75,10 @@ remote func start_initialization():
 	emit_signal('started_initialization')
 
 func _reset_score():
-	Score.master_score = 0
-	Score.slave_score = 0
+	set_score({
+		master_score = 0,
+		slave_score = 0
+	})
 
 func start_game():
 	if state == STATE.STARTED:
