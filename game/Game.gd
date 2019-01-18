@@ -1,21 +1,17 @@
 extends Node
 
-const START_TIMER_WAIT = 3
-
 var all_players = []
-
-var start_timer = Timer.new()
 
 func _ready():
 	GameState.connect('score_changed', self, '_update_score_labels')
 	GameState.connect('init_params_changed', self, '_on_init_params_changed')
+	GameState.connect('started_initialization', self, '_on_initialization_started')
 	GameState.connect('started_game', self, '_start_game')
 	GameState.connect('ended_game', self, '_end_game')
 	
-	start_timer.connect('timeout', GameState, 'start_game')	
+	GameState.start_timer.connect('timeout', GameState, 'start_game')	
 	
 	Network.connect('ping_changed', self, '_on_ping_change')
-	get_tree().connect('network_peer_connected', self, '_start_initial_countdown')
 	get_tree().connect('network_peer_disconnected', self, '_hide_replay_button')
 	get_tree().connect('server_disconnected', self, '_hide_replay_button')
 	
@@ -34,15 +30,16 @@ func _ready():
 	$Interface/GameStartContainer/GameStartContainer/ScoreToWin.text += str(GameState.InitParams.score_to_win)
 	$Interface/GameEndedDialogue.hide()
 
-func _start_initial_countdown(id):
-	start_timer.set_wait_time(START_TIMER_WAIT)
-	start_timer.set_one_shot(true)
-	add_child(start_timer)
-	start_timer.start()
-
 func _process(delta):
-	if !start_timer.is_stopped():
-		$Interface/GameStartContainer/GameStartContainer/TimeToStart.text = str(int(start_timer.get_time_left()) + 1)
+	if !GameState.start_timer.is_stopped():
+		$Interface/GameStartContainer/GameStartContainer/TimeToStart.text = str(int(GameState.start_timer.get_time_left()) + 1)
+
+func _on_initialization_started():
+	$Interface/GameEndedDialogue.hide()
+	$Interface/GameStartContainer.show()
+	$Puck.set_position(Vector2(640, 300))
+	for player in all_players:
+		player.reset()
 
 func _start_game():
 	$Interface/GameStartContainer.hide()
@@ -56,6 +53,12 @@ sync func _end_game(has_won):
 		player.stop()
 	if !has_won:
 		$Interface/GameEndedDialogue/VBoxContainer/Title.text = "You've lost"
+		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color', Color('#a50000'))
+		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color_shadow', Color('#c98d00'))
+	else:
+		$Interface/GameEndedDialogue/VBoxContainer/Title.text = "You've won"
+		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color', Color('#1f8001'))
+		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color_shadow', Color('#00ffe1'))
 	$Interface/GameEndedDialogue.show()
 
 func _hide_replay_button(id = 0):
@@ -84,3 +87,6 @@ func add_player(player):
 
 func _on_BackButton_pressed():
 	GameState.return_to_menu()
+
+func _on_ReplayButton_pressed():
+	GameState.start_initialization()

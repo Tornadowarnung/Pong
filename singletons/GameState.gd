@@ -15,6 +15,8 @@ enum STATE {
 	ENDED,
 }
 
+const START_TIMER_WAIT = 3
+
 var state = STATE.MENU
 
 var Settings = {
@@ -30,10 +32,14 @@ var Score = {
 	slave_score = 0
 } setget set_score
 
-func _ready():
-	get_tree().connect('network_peer_connected', self, 'initiate_state')
+var start_timer = Timer.new()
 
-func initiate_state(id):
+func _ready():
+	add_child(start_timer)
+	get_tree().connect('network_peer_connected', self, 'initiate_state')
+	get_tree().connect('network_peer_connected', self, '_start_initial_countdown')
+
+func initiate_state(id = 0):
 	rset_config('Score', Node.RPC_MODE_REMOTE)
 	rset_config('InitParams', Node.RPC_MODE_REMOTE)
 	if Network.is_server():
@@ -52,9 +58,14 @@ func set_score(new_score):
 		rset('Score', Score)
 	emit_signal('score_changed', Score)
 
-func start_initialization():
+remote func start_initialization():
 	if state == STATE.INITIALIZING:
 		return
+	if state == STATE.ENDED:
+		rpc('start_initialization')
+		initiate_state()
+		_start_initial_countdown()
+	print('started initialization')
 	_reset_score()
 	if !get_tree().get_root().has_node('Game'):
 		var Game = load('res://game/Game.tscn').instance()
@@ -69,12 +80,14 @@ func _reset_score():
 func start_game():
 	if state == STATE.STARTED:
 		return
+	print('started game')	
 	state = STATE.STARTED
 	emit_signal('started_game')
 
 func end_game():
 	if state == STATE.ENDED:
 		return
+	print('ended game')
 	state = STATE.ENDED
 	emit_signal('ended_game', _has_won())
 
@@ -91,3 +104,8 @@ func return_to_menu():
 	get_tree().get_root().get_node('Game').queue_free()
 	get_tree().get_root().get_node('MainMenu').show()
 	emit_signal('returned_to_menu')
+
+sync func _start_initial_countdown(id = 0):
+	start_timer.set_wait_time(START_TIMER_WAIT)
+	start_timer.set_one_shot(true)
+	start_timer.start()

@@ -78,3 +78,6 @@ sync func start():
 
 func stop():
 	active = false
+
+func reset():
+	position.y = 300

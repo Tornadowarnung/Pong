@@ -382,7 +382,6 @@ _sections_unfolded = [ "Rect", "custom_fonts" ]
 
 [node name="GameEndedDialogue" type="Panel" parent="Interface" index="3"]
 
-visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -431,15 +430,15 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 4
 size_flags_vertical = 1
 custom_fonts/font = SubResource( 4 )
-custom_colors/font_color = Color( 0.12204, 0.503906, 0, 1 )
-custom_colors/font_color_shadow = Color( 0, 1, 0.882813, 1 )
+custom_colors/font_color = Color( 0.648438, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.789063, 0.55481, 0, 1 )
 custom_constants/shadow_offset_x = 2
 text = "You've won!"
 align = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Visibility", "custom_fonts" ]
+_sections_unfolded = [ "Visibility", "custom_colors", "custom_fonts" ]
 
 [node name="Spacing" type="Control" parent="Interface/GameEndedDialogue/VBoxContainer" index="1"]
 
@@ -576,5 +575,7 @@ _sections_unfolded = [ "custom_fonts" ]
 [connection signal="_on_goal" from="Puck" to="." method="_on_goal"]
 
 [connection signal="pressed" from="Interface/GameEndedDialogue/VBoxContainer/Buttons/BackButton" to="." method="_on_BackButton_pressed"]
+
+[connection signal="pressed" from="Interface/GameEndedDialogue/VBoxContainer/Buttons/ReplayButton" to="." method="_on_ReplayButton_pressed"]
 
 
