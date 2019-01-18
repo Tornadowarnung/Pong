@@ -80,7 +80,7 @@ remote func _send_player_info(id, info):
 			rpc_id(id, '_send_player_info', peer_id, players[peer_id])
 	players[id] = info
 	
-	var new_player = load('res://player/Player.tscn').instance()
+	var new_player = load('res://phyiscalObjects/player/Player.tscn').instance()
 	new_player.name = str(id)
 	new_player.set_network_master(id)
 	$'/root/Game/'.add_player(new_player)

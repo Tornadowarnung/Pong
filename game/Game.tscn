@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://game/Game.gd" type="Script" id=1]
-[ext_resource path="res://puck/Puck.tscn" type="PackedScene" id=2]
+[ext_resource path="res://phyiscalObjects/puck/Puck.tscn" type="PackedScene" id=2]
 [ext_resource path="res://fonts/changa/Changa-Regular.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://fonts/changa-regular.tres" type="DynamicFont" id=4]
 
@@ -572,7 +572,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "custom_fonts" ]
 
-[connection signal="_on_goal" from="Puck" to="." method="_on_goal"]
+[connection signal="scored_goal" from="Puck" to="." method="_on_goal"]
 
 [connection signal="pressed" from="Interface/GameEndedDialogue/VBoxContainer/Buttons/BackButton" to="." method="_on_BackButton_pressed"]
 
