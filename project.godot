@@ -12,11 +12,12 @@ config_version=3
 
 config/name="Pong"
 run/main_scene="res://interface/MainMenu.tscn"
-config/icon="res://icon.png"
+config/icon="res://pong-icon.png"
 
 [autoload]
 
-Network="*res://Network.gd"
+Network="*res://singletons/Network.gd"
+GameState="*res://singletons/GameState.gd"
 
 [display]
 

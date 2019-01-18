@@ -1,9 +1,11 @@
 extends KinematicBody2D
 
+signal _on_goal
+
 const SPEED = 800.0
 const PLAYER_CLASS = preload("res://player/Player.gd")
 
-var started = false
+var active = false
 var movement
 
 # Networking variables
@@ -14,10 +16,9 @@ var new_slave_pos
 var old_slave_pos
 var last_packet_time
 var elapsed = 0.0
-# master
-var since_sent_pos = 0.0
 
 func _ready():
+	Network.connect('ticked', self, '_on_network_tick')
 	if is_network_master():
 		movement = Vector2(-SPEED, 0)
 		$VisibilityNotifier2D.connect("screen_exited", self, "_on_screen_exited")
@@ -28,16 +29,10 @@ func _process(delta):
 	current_time += delta
 
 func _physics_process(delta):
-	if !started:
+	if !active:
 		return
 	if is_network_master():
 		var collision_info = move_and_collide(movement * delta)
-		
-		if since_sent_pos >= Network.UPDATE_TIME:
-			rpc_unreliable('_set_slave_position', position, current_time + Network.UPDATE_TIME)
-			since_sent_pos = 0.0
-		else:
-			since_sent_pos += delta
 		
 		if collision_info:
 			if collision_info.collider is PLAYER_CLASS:
@@ -51,6 +46,10 @@ func _physics_process(delta):
 			else:
 				curr_fraction = curr_fraction + delta * 100
 			move_and_collide((new_slave_pos - position) * curr_fraction)
+
+func _on_network_tick():
+	if Network._has_active_connections():
+		rpc_unreliable('_set_slave_position', position, current_time + Network.UPDATE_TIME)
 
 remote func _set_slave_position(new_pos, master_time):
 	if last_packet_time:
@@ -74,8 +73,12 @@ func _normalize_speed():
 	movement = movement * remainder
 
 func _on_screen_exited():
+	emit_signal("_on_goal", position.x > get_viewport_rect().size.x)
 	position = get_viewport_rect().size / 2
 	movement = Vector2(-SPEED, 0)
 
 func start():
-	started = true
+	active = true
+
+func stop():
+	active = false

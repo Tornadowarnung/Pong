@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon.png-487276ed1e3a0c39cad0279d744ee560.stex"
+path="res://.import/pong-icon.png-4d4efcd32d0477c366810289f103d107.stex"
 
 [deps]
 
-source_file="res://icon.png"
-dest_files=[ "res://.import/icon.png-487276ed1e3a0c39cad0279d744ee560.stex" ]
+source_file="res://pong-icon.png"
+dest_files=[ "res://.import/pong-icon.png-4d4efcd32d0477c366810289f103d107.stex" ]
 
 [params]
 
