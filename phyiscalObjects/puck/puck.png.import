@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/paddle.png-7ed4fa46d62731ef77debe5ef2f05876.stex"
+path="res://.import/puck.png-f0f9dcfd638b174f8f09d23544344271.stex"
 
 [deps]
 
-source_file="res://player/paddle.png"
-dest_files=[ "res://.import/paddle.png-7ed4fa46d62731ef77debe5ef2f05876.stex" ]
+source_file="res://phyiscalObjects/puck/puck.png"
+dest_files=[ "res://.import/puck.png-f0f9dcfd638b174f8f09d23544344271.stex" ]
 
 [params]
 
