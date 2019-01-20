@@ -2,58 +2,44 @@ extends Node2D
 
 var active = false
 
-var Interpolation = {
-		# Networking variables
-	current_time = 0.0,
-	# slave
-	curr_fraction = 0,
-	new_slave_pos = Vector2(),
-	old_slave_pos = Vector2(),
-	last_packet_time = 0,
-	elapsed = 0.0
-}
+var velocity
 
 func _ready():
 	Network.connect('ticked', self, '_on_network_tick')
-
-func _process(delta):
-	if !active:
-		return
-	Interpolation.current_time += delta
+	rset_config('position', RPC_MODE_REMOTE)
+	rset_config('velocity', RPC_MODE_REMOTE)
 
 func _physics_process(delta):
 	if !active:
 		return
-	before_movement(delta)
-	if is_network_master():
-		master_movement(delta)
+	prepare_move(delta)
+	var collision = move(delta)
+	if collision:
+		handle_collision(collision)
+	if Network._has_active_connections() and is_network_master():
+		handle_master_after_move(delta)
 	else:
-		slave_movement(delta)
+		handle_slave_after_move(delta)
 
-func before_movement(delta):
+func prepare_move(delta):
 	pass
 
-func master_movement(delta):
-	print('ERROR: master_movement should not be called but instead be overriden by the extending scenes')
+func move(delta):
+	return move_and_collide(velocity * delta)
 
-func slave_movement(delta):
-	if Interpolation.last_packet_time && Interpolation.old_slave_pos && Interpolation.new_slave_pos:
-		if Interpolation.elapsed != 0:
-			Interpolation.curr_fraction = Interpolation.curr_fraction + (delta / Interpolation.elapsed)
-		else:
-			Interpolation.curr_fraction = Interpolation.curr_fraction + delta * 100
-		position = (1 - Interpolation.curr_fraction) * Interpolation.old_slave_pos + Interpolation.curr_fraction * Interpolation.new_slave_pos
+func handle_collision(collision):
+	pass
+
+func handle_master_after_move(delta):
+	pass
+
+func handle_slave_after_move(delta):
+	pass
 
 func _on_network_tick():
-	if Network._has_active_connections():
-		rpc_unreliable('_set_slave_position', position, Interpolation.current_time + Network.UPDATE_TIME)
-
-remote func _set_slave_position(new_pos, master_time):
-	Interpolation.elapsed = (master_time - Interpolation.last_packet_time)
-	Interpolation.new_slave_pos = new_pos
-	Interpolation.old_slave_pos = position
-	Interpolation.last_packet_time = master_time
-	Interpolation.curr_fraction = 0
+	if Network._has_active_connections() and is_network_master():
+		rset_unreliable('position', position)
+		rset_unreliable('velocity', velocity)
 
 func start():
 	active = true
@@ -61,5 +47,5 @@ func start():
 func stop():
 	active = false
 
-func reset():
+sync func reset():
 	print('ERROR: reset should not be called but instead be overriden by the extending scenes')

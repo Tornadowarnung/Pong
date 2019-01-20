@@ -1,6 +1,6 @@
 extends Node
 
-const UPDATE_TIME = 0.01
+const UPDATE_TIME = 0.25
 const MASTER_POSITION = Vector2(30, 300)
 
 var peer
