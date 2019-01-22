@@ -2,7 +2,7 @@ extends Node2D
 
 var active = false
 
-var velocity
+var velocity = Vector2(0, 0)
 
 func _ready():
 	Network.connect('ticked', self, '_on_network_tick')
