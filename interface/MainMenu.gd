@@ -6,7 +6,6 @@ enum AVAILABLE_MENUES{
 	Client
 }
 
-var _player_name = ""
 var _ip_address = ""
 var current_menu = AVAILABLE_MENUES.Initial
 
@@ -15,31 +14,22 @@ func _ready():
 	GameState.connect('returned_to_menu', self, 'show')
 	_change_menu_to(current_menu)
 
-func _on_Name_text_changed(new_text):
-	_player_name = new_text
-
 func _on_IPAddress_text_changed(new_text):
 	_ip_address = new_text
 	Network.set_ip(_ip_address)
 
 func _on_CreateButton_pressed():
-	if _player_name == "":
-		$InitialMenu/NameContainer/WarningContainer/NameWarning.show()
-		return
 	_change_menu_to(AVAILABLE_MENUES.Host)
 
 func _on_JoinButton_pressed():
-	if _player_name == "":
-		$InitialMenu/NameContainer/WarningContainer/NameWarning.show()
-		return
 	_change_menu_to(AVAILABLE_MENUES.Client)
 
 func _create_server():
-	Network.create_server(_player_name)
+	Network.create_server()
 	GameState.start_initialization()
 
 func _join_server():
-	Network.connect_to_server(_player_name)
+	Network.connect_to_server()
 	GameState.start_initialization()
 
 func _on_Back_pressed():

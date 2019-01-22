@@ -41,13 +41,13 @@ func _ready():
 func set_ip(ip):
 	ip_address = ip
 
-func create_server(player_nickname):
+func create_server():
 	peer = NetworkedMultiplayerENet.new()
 	var error = peer.create_server(port, MAX_PLAYERS - 1)
 	print("Creating server at port ", port, " with error code ", error)
 	get_tree().set_network_peer(peer)
 
-func connect_to_server(player_nickname):
+func connect_to_server():
 	peer = NetworkedMultiplayerENet.new()
 	var error = peer.create_client(ip_address, port)
 	print("Connecting to ", ip_address, ":", port, " with error code ", error)
