@@ -15,6 +15,12 @@ enum STATE {
 	ENDED,
 }
 
+enum END_STATE {
+	WON,
+	LOST,
+	DISCONNECTED,
+}
+
 const START_TIMER_WAIT = 3
 
 var state = STATE.MENU
@@ -95,10 +101,12 @@ func end_game():
 	emit_signal('ended_game', _has_won())
 
 func _has_won():
+	if !Network._has_active_connections():
+		return END_STATE.DISCONNECTED
 	if Network.is_server() and Score.master_score >= InitParams.score_to_win \
 		or !Network.is_server() and Score.slave_score >= InitParams.score_to_win:
-		return true
-	return false
+		return END_STATE.WON
+	return END_STATE.LOST
 
 func return_to_menu():
 	if state == STATE.MENU:

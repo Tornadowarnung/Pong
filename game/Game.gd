@@ -12,8 +12,8 @@ func _ready():
 	GameState.start_timer.connect('timeout', GameState, 'start_game')	
 	
 	Network.connect('ping_changed', self, '_on_ping_change')
-	get_tree().connect('network_peer_disconnected', self, '_hide_replay_button')
-	get_tree().connect('server_disconnected', self, '_hide_replay_button')
+	get_tree().connect('network_peer_disconnected', self, '_on_disconnect')
+	get_tree().connect('server_disconnected', self, '_on_disconnect')
 	
 	$Puck.connect('scored_goal', self, '_on_goal')
 	
@@ -49,19 +49,31 @@ func _start_game():
 	for player in all_players:
 		player.start()
 
-sync func _end_game(has_won):
+sync func _end_game(end_state):
 	$Puck.stop()
 	for player in all_players:
 		player.stop()
-	if !has_won:
-		$Interface/GameEndedDialogue/VBoxContainer/Title.text = "You've lost"
-		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color', Color('#a50000'))
-		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color_shadow', Color('#c98d00'))
-	else:
+	if end_state == GameState.END_STATE.WON:
 		$Interface/GameEndedDialogue/VBoxContainer/Title.text = "You've won"
 		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color', Color('#1f8001'))
 		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color_shadow', Color('#00ffe1'))
+	elif end_state == GameState.END_STATE.LOST:
+		$Interface/GameEndedDialogue/VBoxContainer/Title.text = "You've lost"
+		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color', Color('#a50000'))
+		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color_shadow', Color('#c98d00'))
+	elif end_state == GameState.END_STATE.DISCONNECTED:
+		$Interface/GameEndedDialogue/VBoxContainer/Title.text = "Connection Error"
+		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color', Color('#a50000'))
+		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color_shadow', Color('#c98d00'))		
+	else:
+		$Interface/GameEndedDialogue/VBoxContainer/Title.text = "Unknown Error"
+		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color', Color('#a50000'))
+		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color_shadow', Color('#c98d00'))
 	$Interface/GameEndedDialogue.show()
+
+func _on_disconnect(id = 0):
+	GameState.end_game()
+	_hide_replay_button()
 
 func _hide_replay_button(id = 0):
 	$Interface/GameEndedDialogue/VBoxContainer/Warning.show()
