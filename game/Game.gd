@@ -9,7 +9,8 @@ func _ready():
 	GameState.connect('started_game', self, '_start_game')
 	GameState.connect('ended_game', self, '_end_game')
 	
-	GameState.start_timer.connect('timeout', GameState, 'start_game')	
+	if !GameState.start_timer.is_connected('timeout', GameState, 'start_game'):
+		GameState.start_timer.connect('timeout', GameState, 'start_game')	
 	
 	Network.connect('ping_changed', self, '_on_ping_change')
 	get_tree().connect('network_peer_disconnected', self, '_on_disconnect')
@@ -21,8 +22,7 @@ func _ready():
 	new_player.name = str(get_tree().get_network_unique_id())
 	new_player.set_network_master(get_tree().get_network_unique_id())
 	add_player(new_player)
-	var info = Network.self_data
-	new_player.init(info.name, info.position, false)
+	new_player.init(Network.is_server())
 	
 	if GameState.Settings.ping_visible:
 		$Interface/Ping.show()

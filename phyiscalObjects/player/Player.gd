@@ -2,8 +2,6 @@ extends 'res://phyiscalObjects/NetworkablePhysicsObject.gd'
 
 const SPEED = 300
 
-var player_name
-
 func prepare_move(delta):
 	if Network._has_active_connections() and is_network_master():
 		if Input.is_action_pressed('up'):
@@ -17,10 +15,12 @@ func handle_master_after_move(delta):
 	rset_unreliable('position', position)
 	rset_unreliable('velocity', velocity)
 
-func init(nameIn, positionIn, is_slave):
-	player_name = nameIn
-	position = positionIn
-	if is_slave:
+func init(is_left):
+	if is_left:
+		position = Vector2(30, 300)
+	else:
+		position = Vector2(get_viewport().get_visible_rect().size.x - 30 , 300)
+	if !is_network_master():
 		$Sprite.set_self_modulate(Color(0.80, 0.25, 0.25))
 
 sync func reset():
