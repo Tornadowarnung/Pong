@@ -1,5 +1,7 @@
 extends Node
 
+onready var Player = preload('res://phyiscalObjects/player/Player.tscn')
+
 var all_players = []
 
 func _ready():
@@ -18,11 +20,10 @@ func _ready():
 	
 	$Puck.connect('scored_goal', self, '_on_goal')
 	
-	var new_player = preload('res://phyiscalObjects/player/Player.tscn').instance()
-	new_player.name = str(get_tree().get_network_unique_id())
-	new_player.set_network_master(get_tree().get_network_unique_id())
-	add_player(new_player)
-	new_player.init(Network.is_server())
+	if !Network.is_local_only:
+		_init_network_player()
+	else:
+		_init_local_players()
 	
 	if GameState.Settings.ping_visible:
 		$Interface/Ping.show()
@@ -30,6 +31,24 @@ func _ready():
 		$Interface/Ping.hide()
 	
 	$Interface/GameStartContainer/GameStartContainer/ScoreToWin.text += str(GameState.InitParams.score_to_win)
+
+func _init_network_player():
+	var new_player = Player.instance()
+	new_player.name = str(get_tree().get_network_unique_id())
+	new_player.set_network_master(get_tree().get_network_unique_id())
+	add_player(new_player)
+	new_player.init(Network.is_server())
+
+func _init_local_players():
+	var left_player = Player.instance()
+	left_player.name = 'LeftPlayer'
+	add_player(left_player)
+	left_player.init(true)
+
+	var right_player = Player.instance()
+	right_player.name = 'RightPlayer'
+	add_player(right_player)
+	right_player.init(false)
 
 func _process(delta):
 	if !GameState.start_timer.is_stopped():

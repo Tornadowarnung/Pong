@@ -367,9 +367,4 @@ _sections_unfolded = [ "Rect", "custom_fonts" ]
 
 [node name="GameEndedDialogue" parent="Interface" index="3" instance=ExtResource( 5 )]
 
-won_foreground_color = Color( 0.121569, 0.501961, 0.00392157, 1 )
-won_background_color = Color( 0, 1, 0.882353, 1 )
-lost_error_foreground_color = Color( 0.647059, 0, 0, 1 )
-lost_error_background_color = Color( 0.788235, 0.552941, 0, 1 )
-
 

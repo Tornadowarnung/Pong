@@ -19,6 +19,8 @@ enum END_STATE {
 	WON,
 	LOST,
 	DISCONNECTED,
+	LEFT_WON,
+	RIGHT_WON
 }
 
 const START_TIMER_WAIT = 3
@@ -44,6 +46,7 @@ func _ready():
 	add_child(start_timer)
 	get_tree().connect('network_peer_connected', self, 'initiate_state')
 	get_tree().connect('network_peer_connected', self, '_start_initial_countdown')
+	Network.connect('started_locally', self, '_start_initial_countdown')
 
 func initiate_state(id = 0):
 	rset_config('Score', Node.RPC_MODE_REMOTE)
@@ -102,6 +105,11 @@ func end_game():
 	emit_signal('ended_game', _has_won())
 
 func _has_won():
+	if Network.is_local_only:
+		if Score.master_score >= InitParams.score_to_win:
+			return END_STATE.LEFT_WON
+		elif Score.slave_score >= InitParams.score_to_win:
+			return END_STATE.RIGHT_WON
 	if !Network._has_active_connections():
 		return END_STATE.DISCONNECTED
 	if Network.is_server() and Score.master_score >= InitParams.score_to_win \

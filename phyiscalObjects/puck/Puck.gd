@@ -7,7 +7,7 @@ const PLAYER_CLASS = preload("res://phyiscalObjects/player/Player.gd")
 
 func _ready():
 	velocity = Vector2(-SPEED, 0)
-	if is_network_master():
+	if Network.is_network_master_of(self):
 		$VisibilityNotifier2D.connect("screen_exited", self, "_on_screen_exited")
 
 func handle_collision(collision_info):
@@ -41,6 +41,8 @@ func _on_screen_exited():
 	emit_signal("scored_goal", position.x > get_viewport_rect().size.x)
 	if Network._has_active_connections():
 		rpc("reset")
+	if Network.is_local_only:
+		reset()
 
 sync func reset():
 	position = get_viewport_rect().size / 2

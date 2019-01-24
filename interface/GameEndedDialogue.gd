@@ -40,6 +40,12 @@ func _end_game(end_state):
 	elif end_state == GameState.END_STATE.DISCONNECTED:
 		Title.text = "Connection Error"
 		set_title_colors_to(lost_error_foreground_color, lost_error_background_color)
+	elif end_state == GameState.END_STATE.LEFT_WON:
+		Title.text = "Left won"
+		set_title_colors_to(won_foreground_color, won_background_color)
+	elif end_state == GameState.END_STATE.RIGHT_WON:
+		Title.text = "Right won"
+		set_title_colors_to(lost_error_foreground_color, lost_error_background_color)
 	else:
 		Title.text = "Unknown Error"
 		set_title_colors_to(lost_error_foreground_color, lost_error_background_color)
@@ -59,6 +65,9 @@ func _on_BackButton_pressed():
 	GameState.return_to_menu()
 
 func _on_ReplayButton_pressed():
+	if Network.is_local_only:
+		start_rematch()
+		return
 	if rematch_was_requested:
 		rpc("start_rematch")
 		return
