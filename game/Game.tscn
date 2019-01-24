@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://game/Game.gd" type="Script" id=1]
 [ext_resource path="res://phyiscalObjects/puck/Puck.tscn" type="PackedScene" id=2]
 [ext_resource path="res://fonts/changa/Changa-Regular.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://fonts/changa-regular.tres" type="DynamicFont" id=4]
+[ext_resource path="res://interface/GameEndedDialogue.tscn" type="PackedScene" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -21,22 +22,6 @@ size = 20
 use_mipmaps = false
 use_filter = false
 font_data = ExtResource( 3 )
-
-[sub_resource type="DynamicFont" id=4]
-
-size = 70
-use_mipmaps = false
-use_filter = false
-font_data = ExtResource( 3 )
-_sections_unfolded = [ "Settings" ]
-
-[sub_resource type="DynamicFont" id=5]
-
-size = 20
-use_mipmaps = false
-use_filter = false
-font_data = ExtResource( 3 )
-_sections_unfolded = [ "Settings" ]
 
 [node name="Game" type="Node"]
 
@@ -380,200 +365,11 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect", "custom_fonts" ]
 
-[node name="GameEndedDialogue" type="Panel" parent="Interface" index="3"]
+[node name="GameEndedDialogue" parent="Interface" index="3" instance=ExtResource( 5 )]
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 366.0
-margin_top = 111.0
-margin_right = 917.0
-margin_bottom = 505.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Interface/GameEndedDialogue" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 552.0
-margin_bottom = 395.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Title" type="Label" parent="Interface/GameEndedDialogue/VBoxContainer" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 94.0
-margin_right = 457.0
-margin_bottom = 129.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 4
-size_flags_vertical = 1
-custom_fonts/font = SubResource( 4 )
-custom_colors/font_color = Color( 0.648438, 0, 0, 1 )
-custom_colors/font_color_shadow = Color( 0.789063, 0.55481, 0, 1 )
-custom_constants/shadow_offset_x = 2
-text = "You've won!"
-align = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Visibility", "custom_colors", "custom_fonts" ]
-
-[node name="Spacing" type="Control" parent="Interface/GameEndedDialogue/VBoxContainer" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 133.0
-margin_right = 552.0
-margin_bottom = 170.0
-rect_min_size = Vector2( 0, 37 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Warning" type="Label" parent="Interface/GameEndedDialogue/VBoxContainer" index="2"]
-
-visible = false
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 194.0
-margin_right = 552.0
-margin_bottom = 232.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = SubResource( 5 )
-custom_colors/font_color = Color( 1, 0, 0, 1 )
-text = "The other player already disconnected"
-align = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "custom_colors", "custom_fonts" ]
-
-[node name="Spacing2" type="Control" parent="Interface/GameEndedDialogue/VBoxContainer" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 174.0
-margin_right = 552.0
-margin_bottom = 211.0
-rect_min_size = Vector2( 0, 37 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Buttons" type="HBoxContainer" parent="Interface/GameEndedDialogue/VBoxContainer" index="4"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 215.0
-margin_right = 552.0
-margin_bottom = 296.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-custom_constants/separation = 50
-alignment = 1
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="BackButton" type="Button" parent="Interface/GameEndedDialogue/VBoxContainer/Buttons" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 36.0
-margin_right = 292.0
-margin_bottom = 81.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "< DISCONNECT"
-flat = false
-align = 1
-_sections_unfolded = [ "custom_fonts" ]
-
-[node name="ReplayButton" type="Button" parent="Interface/GameEndedDialogue/VBoxContainer/Buttons" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 342.0
-margin_right = 516.0
-margin_bottom = 81.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "REMATCH"
-flat = false
-align = 1
-_sections_unfolded = [ "custom_fonts" ]
-
-[connection signal="pressed" from="Interface/GameEndedDialogue/VBoxContainer/Buttons/BackButton" to="." method="_on_BackButton_pressed"]
-
-[connection signal="pressed" from="Interface/GameEndedDialogue/VBoxContainer/Buttons/ReplayButton" to="." method="_on_ReplayButton_pressed"]
+won_foreground_color = Color( 0.121569, 0.501961, 0.00392157, 1 )
+won_background_color = Color( 0, 1, 0.882353, 1 )
+lost_error_foreground_color = Color( 0.647059, 0, 0, 1 )
+lost_error_background_color = Color( 0.788235, 0.552941, 0, 1 )
 
 
