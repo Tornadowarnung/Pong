@@ -94,7 +94,8 @@ func start_game():
 	emit_signal('started_game')
 
 func end_game():
-	if state == STATE.ENDED:
+	if state == STATE.ENDED\
+		or state == STATE.MENU:
 		return
 	print('ended game')
 	state = STATE.ENDED
