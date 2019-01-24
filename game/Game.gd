@@ -30,14 +30,12 @@ func _ready():
 		$Interface/Ping.hide()
 	
 	$Interface/GameStartContainer/GameStartContainer/ScoreToWin.text += str(GameState.InitParams.score_to_win)
-	$Interface/GameEndedDialogue.hide()
 
 func _process(delta):
 	if !GameState.start_timer.is_stopped():
 		$Interface/GameStartContainer/GameStartContainer/TimeToStart.text = str(int(GameState.start_timer.get_time_left()) + 1)
 
 func _on_initialization_started():
-	$Interface/GameEndedDialogue.hide()
 	$Interface/GameStartContainer.show()
 	$Puck.set_position(Vector2(640, 300))
 	for player in all_players:
@@ -53,31 +51,9 @@ sync func _end_game(end_state):
 	$Puck.stop()
 	for player in all_players:
 		player.stop()
-	if end_state == GameState.END_STATE.WON:
-		$Interface/GameEndedDialogue/VBoxContainer/Title.text = "You've won"
-		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color', Color('#1f8001'))
-		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color_shadow', Color('#00ffe1'))
-	elif end_state == GameState.END_STATE.LOST:
-		$Interface/GameEndedDialogue/VBoxContainer/Title.text = "You've lost"
-		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color', Color('#a50000'))
-		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color_shadow', Color('#c98d00'))
-	elif end_state == GameState.END_STATE.DISCONNECTED:
-		$Interface/GameEndedDialogue/VBoxContainer/Title.text = "Connection Error"
-		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color', Color('#a50000'))
-		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color_shadow', Color('#c98d00'))		
-	else:
-		$Interface/GameEndedDialogue/VBoxContainer/Title.text = "Unknown Error"
-		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color', Color('#a50000'))
-		$Interface/GameEndedDialogue/VBoxContainer/Title.add_color_override('font_color_shadow', Color('#c98d00'))
-	$Interface/GameEndedDialogue.show()
 
 func _on_disconnect(id = 0):
 	GameState.end_game()
-	_hide_replay_button()
-
-func _hide_replay_button(id = 0):
-	$Interface/GameEndedDialogue/VBoxContainer/Warning.show()
-	$Interface/GameEndedDialogue/VBoxContainer/Buttons/ReplayButton.set_disabled(true)
 
 func _on_goal(master_scored):
 	if master_scored:
@@ -98,9 +74,3 @@ func _on_ping_change(ping):
 func add_player(player):
 	all_players.append(player)
 	add_child(player)
-
-func _on_BackButton_pressed():
-	GameState.return_to_menu()
-
-func _on_ReplayButton_pressed():
-	GameState.start_initialization()
