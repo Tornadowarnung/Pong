@@ -20,7 +20,7 @@ use_filter = false
 font_data = ExtResource( 2 )
 _sections_unfolded = [ "Settings" ]
 
-[node name="GameEndedDialogue" type="Panel" index="0"]
+[node name="GameEndedDialogue" type="Panel"]
 
 anchor_left = 0.0
 anchor_top = 0.0

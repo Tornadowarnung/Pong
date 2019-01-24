@@ -1,16 +1,17 @@
 extends Node
 
+const MAX_PLAYERS = 2
 const UPDATE_TIME = 0.25
-const MASTER_POSITION = Vector2(30, 300)
 
 var peer
 var ip_address = '127.0.0.1' setget set_ip
 var port = 12345
-const MAX_PLAYERS = 2
 
 signal ping_changed
 signal ticked
+signal started_locally
 
+var is_local_only = false setget set_local_only
 var tick_timer = Timer.new()
 
 var Ping = {	
@@ -41,13 +42,20 @@ func _ready():
 func set_ip(ip):
 	ip_address = ip
 
+func set_local_only(value):
+	is_local_only = value
+	if value:
+		emit_signal('started_locally')
+
 func create_server():
+	is_local_only = false
 	peer = NetworkedMultiplayerENet.new()
 	var error = peer.create_server(port, MAX_PLAYERS - 1)
 	print("Creating server at port ", port, " with error code ", error)
 	get_tree().set_network_peer(peer)
 
 func connect_to_server():
+	is_local_only = false
 	peer = NetworkedMultiplayerENet.new()
 	var error = peer.create_client(ip_address, port)
 	print("Connecting to ", ip_address, ":", port, " with error code ", error)
@@ -86,6 +94,8 @@ remote func _ping_response():
 	emit_signal('ping_changed', Ping.ping)
 
 func disconnect():
+	if Network.is_local_only:
+		return
 	peer.close_connection()
 
 func _on_tick_timer_timeout():
@@ -96,3 +106,9 @@ func is_server():
 
 func _has_active_connections():
 	return get_tree().get_network_peer() != null and get_tree().get_network_peer().get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED
+
+# Returns true if the game is run locally or if the system is the passed node's master
+func is_network_master_of(node):
+	if is_local_only:
+		return true
+	return node.is_network_master()
