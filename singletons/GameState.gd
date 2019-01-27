@@ -1,5 +1,8 @@
 extends Node
 
+signal score_to_win_changed_by
+signal ping_visible_changed
+
 signal init_params_changed
 signal score_changed
 
@@ -53,6 +56,14 @@ func initiate_state(id = 0):
 	rset_config('InitParams', Node.RPC_MODE_REMOTE)
 	if Network.is_server():
 		rset('InitParams', InitParams)
+
+func set_score_to_win(new_score, edited_by):
+	InitParams.score_to_win = new_score
+	emit_signal('score_to_win_changed_by', new_score, edited_by)
+
+func set_ping_visible(ping_visible):
+	Settings.ping_visible = ping_visible
+	emit_signal('ping_visible_changed', ping_visible)
 
 func set_init_params(new_init_params):
 	InitParams = new_init_params
